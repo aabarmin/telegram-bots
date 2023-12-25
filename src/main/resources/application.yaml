@@ -19,3 +19,5 @@ telegram:
         sources:
           - sourceName: Inside Java
             sourceUrl: https://inside.java/feed.xml
+          - sourceName: Vlad Mihalcea
+            sourceUrl: https://vladmihalcea.com/feed/
