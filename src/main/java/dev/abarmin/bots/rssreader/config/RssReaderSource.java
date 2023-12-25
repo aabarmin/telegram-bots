@@ -1,4 +1,4 @@
-package dev.abarmin.bots.rssreader;
+package dev.abarmin.bots.rssreader.config;
 
 import lombok.Value;
 

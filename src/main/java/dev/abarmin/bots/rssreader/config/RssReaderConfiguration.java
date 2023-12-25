@@ -1,10 +1,10 @@
-package dev.abarmin.bots.rssreader;
+package dev.abarmin.bots.rssreader.config;
 
 import com.apptasticsoftware.rssreader.RssReader;
-import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
-@Configurable
+@Configuration
 public class RssReaderConfiguration {
     @Bean
     public RssReader rssReader() {

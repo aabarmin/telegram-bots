@@ -5,3 +5,14 @@ spring:
     password:
   liquibase:
     change-log: classpath:db/changelog/db.changelog-master.xml
+
+telegram:
+  bot:
+    rss:
+      reader:
+        scheduler:
+          initialDelay: PT5S
+          fixedDelay: PT1H
+        sources:
+          - sourceName: Inside Java
+            sourceUrl: https://inside.java/feed.xml

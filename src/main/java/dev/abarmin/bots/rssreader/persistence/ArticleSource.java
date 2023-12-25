@@ -7,14 +7,26 @@ import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Table("ARTICLE_SOURCES")
 public record ArticleSource(
-        @Column("ID") @Id Integer id,
+        @Column("SOURCE_ID") @Id Integer id,
         @Column("SOURCE_NAME") String sourceName,
         @Column("SOURCE_URL") String sourceUrl,
-        @Column("SOURCE_LAST_UPDATED") LocalDate lastUpdated,
-        @Column("CREATED_AT") @CreatedDate LocalDate createdAt,
-        @Column("UPDATED_AT") @LastModifiedDate LocalDate updatedAt
-        ) {
+        @Column("SOURCE_LAST_UPDATED") LocalDateTime lastUpdated,
+        @Column("CREATED_AT") @CreatedDate LocalDateTime createdAt,
+        @Column("UPDATED_AT") @LastModifiedDate LocalDateTime updatedAt
+) {
+
+    public ArticleSource withLastUpdated(LocalDateTime lastUpdated) {
+        return new ArticleSource(
+                id(),
+                sourceName(),
+                sourceUrl(),
+                lastUpdated,
+                createdAt(),
+                updatedAt()
+        );
+    }
 }

@@ -10,15 +10,51 @@ http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
             <column name="SOURCE_ID" autoIncrement="true" type="int">
                 <constraints primaryKey="true" primaryKeyName="article_sources_pk" />
             </column>
-            <column name="SOURCE_NAME" type="CHARACTER">
-                <constraints unique="true" uniqueConstraintName="article_source_name_unique" />
+            <column name="SOURCE_NAME" type="VARCHAR(1024)">
+                <constraints
+                        unique="true" uniqueConstraintName="article_source_name_unique"
+                        nullable="false" notNullConstraintName="article_source_name_not_null"
+                    />
             </column>
-            <column name="SOURCE_URL" type="CHARACTER">
-                <constraints unique="true" uniqueConstraintName="article_source_url_unique" />
+            <column name="SOURCE_URL" type="VARCHAR(1024)">
+                <constraints
+                        unique="true" uniqueConstraintName="article_source_url_unique"
+                        nullable="false" notNullConstraintName="article_source_url_not_null"
+                />
             </column>
-            <column name="SOURCE_LAST_UPDATED" type="DATE" />
-            <column name="CREATED_AT" type="DATE" />
-            <column name="UPDATED_AT" type="DATE" />
+            <column name="SOURCE_LAST_UPDATED" type="DATETIME" />
+            <column name="CREATED_AT" type="DATETIME" />
+            <column name="UPDATED_AT" type="DATETIME" />
         </createTable>
+    </changeSet>
+    <changeSet id="002" author="Aleksandr Barmin">
+        <createTable tableName="ARTICLES">
+            <column name="ARTICLE_ID" autoIncrement="true" type="int">
+                <constraints primaryKey="true" primaryKeyName="articles_pk" />
+            </column>
+            <column name="ARTICLE_SOURCE_ID" type="int">
+                <constraints
+                        nullable="false" notNullConstraintName="article_source_id_not_null"
+                />
+            </column>
+            <column name="ARTICLE_TITLE" type="VARCHAR(1024)">
+                <constraints
+                        nullable="false" notNullConstraintName="article_title_not_null"
+                />
+            </column>
+            <column name="ARTICLE_URL" type="VARCHAR(1024)">
+                <constraints
+                        nullable="false" notNullConstraintName="article_url_not_null"
+                        unique="true" uniqueConstraintName="article_url_unique"
+                />
+            </column>
+            <column name="ARTICLE_ADDED" type="DATETIME" />
+            <column name="CREATED_AT" type="DATETIME" />
+            <column name="UPDATED_AT" type="DATETIME" />
+        </createTable>
+        <addForeignKeyConstraint
+                baseTableName="ARTICLES" baseColumnNames="ARTICLE_SOURCE_ID"
+                constraintName="article_source_id_fk"
+                referencedTableName="ARTICLE_SOURCES" referencedColumnNames="SOURCE_ID" />
     </changeSet>
 </databaseChangeLog>
