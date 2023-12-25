@@ -7,11 +7,11 @@ assignees: ''
 
 ---
 
-** Description **
+**Description**
 
 The main goal of this ticket ...
 
-** Acceptance Criteria **
+**Acceptance Criteria**
 
 * First
 * Second
