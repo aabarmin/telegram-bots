@@ -1,9 +1,9 @@
-package dev.abarmin.bots.rssreader.service;
+package dev.abarmin.bots.rss.reader.service;
 
-import dev.abarmin.bots.rssreader.config.RssReaderProperties;
-import dev.abarmin.bots.rssreader.config.RssReaderSource;
-import dev.abarmin.bots.rssreader.persistence.ArticleSource;
-import dev.abarmin.bots.rssreader.persistence.ArticleSourceRepository;
+import dev.abarmin.bots.rss.reader.config.RssReaderProperties;
+import dev.abarmin.bots.rss.reader.persistence.ArticleSource;
+import dev.abarmin.bots.rss.reader.persistence.ArticleSourceRepository;
+import dev.abarmin.bots.rss.reader.config.RssReaderSource;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;

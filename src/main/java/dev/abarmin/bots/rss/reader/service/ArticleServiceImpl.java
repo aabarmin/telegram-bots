@@ -1,7 +1,7 @@
-package dev.abarmin.bots.rssreader.service;
+package dev.abarmin.bots.rss.reader.service;
 
-import dev.abarmin.bots.rssreader.persistence.Article;
-import dev.abarmin.bots.rssreader.persistence.ArticleRepository;
+import dev.abarmin.bots.rss.reader.persistence.Article;
+import dev.abarmin.bots.rss.reader.persistence.ArticleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

@@ -1,4 +1,4 @@
-package dev.abarmin.bots.rssreader.persistence;
+package dev.abarmin.bots.rss.reader.persistence;
 
 import org.springframework.data.repository.CrudRepository;
 

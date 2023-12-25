@@ -1,6 +1,4 @@
-package dev.abarmin.bots.rssreader.config;
-
-import lombok.Value;
+package dev.abarmin.bots.rss.reader.config;
 
 public record RssReaderSource(
         String sourceName,

@@ -9,6 +9,9 @@ spring:
 telegram:
   bot:
     rss:
+      digest:
+        botName: DigestBot
+        botToken: ${DIGEST_BOT_TOKEN}
       reader:
         scheduler:
           initialDelay: PT5S
