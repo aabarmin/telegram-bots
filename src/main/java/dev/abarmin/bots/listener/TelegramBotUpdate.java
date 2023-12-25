@@ -1,21 +1,18 @@
-package dev.abarmin.bots.rssreader.persistence;
+package dev.abarmin.bots.listener;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
 import java.time.LocalDateTime;
 
-@Table("ARTICLES")
-public record Article(
-        @Column("ARTICLE_ID") @Id Integer id,
-        @Column("ARTICLE_SOURCE_ID") AggregateReference<ArticleSource, Integer> articleSource,
-        @Column("ARTICLE_TITLE") String articleTitle,
-        @Column("ARTICLE_URL") String articleUrl,
-        @Column("ARTICLE_ADDED") LocalDateTime articleAdded,
+@Table("TELEGRAM_UPDATES")
+public record TelegramBotUpdate(
+        @Column("ID") @Id Integer id,
+        @Column("UPDATE_ID") Integer updateId,
+        @Column("CHAT_ID") Long chatId,
         @Column("CREATED_AT") @CreatedDate LocalDateTime createdAt,
         @Column("UPDATED_AT") @LastModifiedDate LocalDateTime updatedAt
         ) {

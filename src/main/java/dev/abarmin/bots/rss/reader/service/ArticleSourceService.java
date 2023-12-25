@@ -1,6 +1,6 @@
-package dev.abarmin.bots.rssreader.service;
+package dev.abarmin.bots.rss.reader.service;
 
-import dev.abarmin.bots.rssreader.persistence.ArticleSource;
+import dev.abarmin.bots.rss.reader.persistence.ArticleSource;
 
 import java.util.Collection;
 

@@ -1,4 +1,4 @@
-package dev.abarmin.bots.rssreader.config;
+package dev.abarmin.bots.rss.reader.config;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;

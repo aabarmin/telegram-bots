@@ -1,4 +1,4 @@
-package dev.abarmin.bots.rssreader.persistence;
+package dev.abarmin.bots.rss.reader.persistence;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
@@ -6,7 +6,6 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Table("ARTICLE_SOURCES")
