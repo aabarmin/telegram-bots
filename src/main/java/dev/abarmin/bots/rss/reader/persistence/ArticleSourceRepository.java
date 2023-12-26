@@ -17,5 +17,13 @@ public interface ArticleSourceRepository extends CrudRepository<ArticleSource, I
      * Return all the sources as a collection.
      * @return
      */
-    Collection<ArticleSource> findAll();
+    default Collection<ArticleSource> findAll() {
+        return findAllByOrderBySourceNameAsc();
+    }
+
+    /**
+     * Return all the sources sorted.
+     * @return
+     */
+    Collection<ArticleSource> findAllByOrderBySourceNameAsc();
 }

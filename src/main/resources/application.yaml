@@ -10,12 +10,16 @@ telegram:
   bot:
     rss:
       digest:
+        enabled: true
         botName: DigestBot
         botToken: ${DIGEST_BOT_TOKEN}
       reader:
+        enabled: true
         scheduler:
           initialDelay: PT5S
           fixedDelay: PT1H
         sources:
           - sourceName: Inside Java
             sourceUrl: https://inside.java/feed.xml
+          - sourceName: Vlad Mihalcea
+            sourceUrl: https://vladmihalcea.com/feed/
