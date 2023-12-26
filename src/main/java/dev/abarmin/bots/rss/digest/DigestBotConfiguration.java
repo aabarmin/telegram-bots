@@ -1,5 +1,6 @@
 package dev.abarmin.bots.rss.digest;
 
+import com.google.gson.Gson;
 import com.pengrad.telegrambot.TelegramBot;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
@@ -15,6 +16,11 @@ public class DigestBotConfiguration {
     @Bean
     public TelegramBot digestBot() {
         return new TelegramBot(properties.botToken());
+    }
+
+    @Bean
+    public Gson gson() {
+        return new Gson();
     }
 
     @Bean
