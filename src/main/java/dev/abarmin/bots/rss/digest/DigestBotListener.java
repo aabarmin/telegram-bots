@@ -10,6 +10,7 @@ import dev.abarmin.bots.rss.reader.digest.DigestBuilder;
 import dev.abarmin.bots.rss.reader.digest.DigestItem;
 import dev.abarmin.bots.rss.reader.digest.DigestSource;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,12 @@ import java.time.LocalDate;
 
 @Service
 @RequiredArgsConstructor
+@ConditionalOnProperty(
+        prefix = "telegram.bot.rss.digest",
+        name = "enabled",
+        havingValue = "true",
+        matchIfMissing = true
+)
 public class DigestBotListener {
     private final TelegramBot digestBot;
     private final DigestBuilder digestBuilder;
