@@ -13,8 +13,6 @@ telegram:
         enabled: true
         botName: DigestBot
         botToken: ${DIGEST_BOT_TOKEN}
-        webHookUrl: ${DIGEST_BOT_WEBHOOK}
-        sqsQueue: ${DIGEST_BOT_SQS_QUEUE}
       reader:
         enabled: true
         scheduler:
