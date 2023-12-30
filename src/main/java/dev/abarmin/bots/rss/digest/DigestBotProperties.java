@@ -7,7 +7,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public record DigestBotProperties(
         @NotEmpty String botName,
         @NotEmpty String botToken,
-        @NotEmpty String webHookUrl,
-        @NotEmpty String sqsQueue
+        String webHook
 ) {
 }

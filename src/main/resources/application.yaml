@@ -8,13 +8,17 @@ spring:
 
 telegram:
   bot:
+    listener:
+      webhook:
+        enabled: true
+      polling:
+        enabled: false
     rss:
       digest:
         enabled: true
         botName: DigestBot
         botToken: ${DIGEST_BOT_TOKEN}
-        webHookUrl: ${DIGEST_BOT_WEBHOOK}
-        sqsQueue: ${DIGEST_BOT_SQS_QUEUE}
+        webHook: ${DIGEST_BOT_WEBHOOK}
       reader:
         enabled: true
         scheduler:
