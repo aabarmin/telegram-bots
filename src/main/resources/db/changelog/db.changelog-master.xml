@@ -77,4 +77,33 @@ http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
             <column name="UPDATED_AT" type="DATETIME" />
         </createTable>
     </changeSet>
+    <changeSet id="004" author="Aleksandr Barmin">
+        <delete tableName="TELEGRAM_UPDATES" />
+
+        <modifyDataType tableName="TELEGRAM_UPDATES" columnName="CHAT_ID" newDataType="long" />
+
+        <createTable tableName="TELEGRAM_CHATS">
+            <column name="ID" autoIncrement="true" type="int">
+                <constraints primaryKey="true" primaryKeyName="telegram_chats_pk" />
+            </column>
+            <column name="CHAT_ID" type="long">
+                <constraints
+                        nullable="false" notNullConstraintName="chat_id_not_null"
+                        unique="true" uniqueConstraintName="chat_id_unique"
+                />
+            </column>
+            <column name="CHAT_STATUS" type="VARCHAR(100)">
+                <constraints
+                        nullable="false" notNullConstraintName="chat_status_not_null"
+                />
+            </column>
+            <column name="CREATED_AT" type="DATETIME" />
+            <column name="UPDATED_AT" type="DATETIME" />
+        </createTable>
+
+        <addForeignKeyConstraint
+                baseTableName="TELEGRAM_UPDATES" baseColumnNames="CHAT_ID"
+                constraintName="update_chat_id_fk"
+                referencedTableName="TELEGRAM_CHATS" referencedColumnNames="CHAT_ID" />
+    </changeSet>
 </databaseChangeLog>
