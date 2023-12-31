@@ -1,8 +1,7 @@
 package dev.abarmin.bots.listener.persistence;
 
-import dev.abarmin.bots.listener.TelegramBotUpdate;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.ListCrudRepository;
 
-public interface TelegramBotUpdateRepository extends CrudRepository<TelegramBotUpdate, Integer> {
+public interface TelegramBotUpdateRepository extends ListCrudRepository<TelegramBotUpdate, Integer> {
     boolean existsByUpdateId(int updateId);
 }
