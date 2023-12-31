@@ -9,6 +9,15 @@ import java.util.Collection;
 
 public interface SubscriptionService {
     /**
+     * Unsubscribe from a given source.
+     *
+     * @param chat
+     * @param source
+     * @return
+     */
+    boolean unsubscribe(TelegramBotChat chat, ArticleSource source);
+
+    /**
      * Find all the subscriptions for the given chat.
      *
      * @param chat

@@ -44,7 +44,7 @@ public class ManageSubscriptionsOperation implements BotOperation {
                 .replyMarkup(new ReplyKeyboardMarkup(
                         new KeyboardButton(messageSource.getMessage("bot.digest.button.back", update)),
                         new KeyboardButton(messageSource.getMessage("bot.digest.button.subscriptions-add", update)),
-                        new KeyboardButton("Delete subscription")
+                        new KeyboardButton(messageSource.getMessage("bot.digest.button.subscriptions-delete", update))
                 ));
         telegramBot.execute(message);
     }

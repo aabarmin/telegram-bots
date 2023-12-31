@@ -39,6 +39,15 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     }
 
     @Override
+    public boolean unsubscribe(TelegramBotChat chat, ArticleSource source) {
+        repository.findByChatIdAndSourceId(
+                AggregateReference.to(chat.chatId()),
+                AggregateReference.to(source.id())
+        ).ifPresent(repository::delete);
+        return true;
+    }
+
+    @Override
     public ArticleSubscription subscribe(TelegramBotChat chat, URI rssUri) {
         var articleSource = sourceService.findOrCreate(rssUri);
         articleReader.read(articleSource);

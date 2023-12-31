@@ -38,7 +38,7 @@ public class SubscriptionsBackOperation implements BotOperation {
     public boolean supports(Update update) {
         var chat = helper.getChat(update);
 
-        return StringUtils.equalsAnyIgnoreCase(chat.chatStatus(), "SUBSCRIPTIONS", "SUBSCRIPTIONS_ADD") &&
+        return StringUtils.equalsAnyIgnoreCase(chat.chatStatus(), "SUBSCRIPTIONS", "SUBSCRIPTIONS_ADD", "SUBSCRIPTIONS_DELETE") &&
                 StringUtils.equalsIgnoreCase(helper.getMessage(update), messageSource.getMessage("bot.digest.button.back", update));
     }
 }
