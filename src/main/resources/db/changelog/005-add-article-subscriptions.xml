@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="005" author="Aleksandr Barmin">
+        <createTable tableName="ARTICLE_SUBSCRIPTIONS">
+            <column name="ID" autoIncrement="true" type="int">
+                <constraints primaryKey="true" primaryKeyName="article_subscription_pk" />
+            </column>
+            <column name="CHAT_ID" type="long">
+                <constraints
+                        nullable="false" notNullConstraintName="chat_id_not_null"
+                />
+            </column>
+            <column name="ARTICLE_SOURCE_ID" type="long">
+                <constraints
+                        nullable="false" notNullConstraintName="article_source_id_not_null"
+                />
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint
+                baseTableName="ARTICLE_SUBSCRIPTIONS" baseColumnNames="CHAT_ID"
+                constraintName="article_subscription_chat_id_fk"
+                referencedTableName="TELEGRAM_CHATS" referencedColumnNames="CHAT_ID" />
+
+        <addForeignKeyConstraint
+                baseTableName="ARTICLE_SUBSCRIPTIONS" baseColumnNames="ARTICLE_SOURCE_ID"
+                constraintName="article_subscription_source_id_fk"
+                referencedTableName="ARTICLE_SOURCES" referencedColumnNames="SOURCE_ID" />
+    </changeSet>
+</databaseChangeLog>

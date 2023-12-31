@@ -18,4 +18,10 @@ public class TelegramChatServiceImpl implements TelegramChatService {
                         "CREATED"
                 )));
     }
+
+    @Override
+    public TelegramBotChat updateStatus(TelegramBotChat chat, String status) {
+        var updatedChat = chat.withStatus(status);
+        return repository.save(updatedChat);
+    }
 }

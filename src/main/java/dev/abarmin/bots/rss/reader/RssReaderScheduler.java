@@ -9,7 +9,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
-import java.util.function.Predicate;
 
 @Service
 @RequiredArgsConstructor
@@ -33,7 +32,6 @@ public class RssReaderScheduler {
                 .stream()
                 .map(articleReader::read)
                 .flatMap(Collection::stream)
-                .filter(Predicate.not(articleService::isAvailable))
                 .forEach(articleService::save);
     }
 }

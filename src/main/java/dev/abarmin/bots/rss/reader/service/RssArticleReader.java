@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 
+import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.stream.Collectors;
@@ -20,14 +21,16 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class RssArticleReader implements ArticleReader {
     private final RssReader reader;
+    private final ArticleService articleService;
     private final ArticleSourceRepository repository;
 
     @Override
     @SneakyThrows
     public Collection<Article> read(ArticleSource source) {
-        log.info("Reading articles from {}", source.sourceUrl());
-        final Collection<Article> articles = reader.read(source.sourceUrl())
+        log.info("Reading articles from {}", source.sourceUri());
+        final Collection<Article> articles = reader.read(source.sourceUri().toString())
                 .map(item -> toArticle(item, source))
+                .map(articleService::save)
                 .collect(Collectors.toList());
 
         repository.save(source.withLastUpdated(LocalDateTime.now()));
@@ -40,7 +43,9 @@ public class RssArticleReader implements ArticleReader {
                 null,
                 AggregateReference.to(source.id()),
                 item.getTitle().orElse("No Title"),
-                item.getLink().orElse("No URL"),
+                item.getLink()
+                        .map(URI::create)
+                        .orElse(null),
                 LocalDateTime.now(),
                 LocalDateTime.now(),
                 null

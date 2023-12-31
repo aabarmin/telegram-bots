@@ -1,29 +1,16 @@
 package dev.abarmin.bots.rss.reader.persistence;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.ListCrudRepository;
 
-import java.util.Collection;
+import java.net.URI;
+import java.util.Optional;
 
-public interface ArticleSourceRepository extends CrudRepository<ArticleSource, Integer> {
+public interface ArticleSourceRepository extends ListCrudRepository<ArticleSource, Integer> {
     /**
-     * Check if an article source with given name already exists.
+     * Find one by source URI.
      *
-     * @param name
+     * @param url
      * @return
      */
-    boolean existsBySourceName(String name);
-
-    /**
-     * Return all the sources as a collection.
-     * @return
-     */
-    default Collection<ArticleSource> findAll() {
-        return findAllByOrderBySourceNameAsc();
-    }
-
-    /**
-     * Return all the sources sorted.
-     * @return
-     */
-    Collection<ArticleSource> findAllByOrderBySourceNameAsc();
+    Optional<ArticleSource> findBySourceUri(URI url);
 }

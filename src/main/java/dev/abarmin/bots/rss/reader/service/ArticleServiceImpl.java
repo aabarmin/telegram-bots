@@ -11,12 +11,8 @@ public class ArticleServiceImpl implements ArticleService {
     private final ArticleRepository repository;
 
     @Override
-    public boolean isAvailable(Article article) {
-        return repository.existsByArticleUrl(article.articleUrl());
-    }
-
-    @Override
     public Article save(Article article) {
-        return repository.save(article);
+        return repository.findByArticleUri(article.articleUri())
+                .orElseGet(() -> repository.save(article));
     }
 }
