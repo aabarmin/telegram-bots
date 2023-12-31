@@ -4,6 +4,7 @@ import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.model.request.ParseMode;
 import com.pengrad.telegrambot.request.SendMessage;
+import dev.abarmin.bots.core.BotHelper;
 import dev.abarmin.bots.core.BotOperation;
 import dev.abarmin.bots.core.MessageSourceHelper;
 import dev.abarmin.bots.listener.service.TelegramChatService;
@@ -24,6 +25,7 @@ public class BuildDigestBotOperation implements BotOperation {
     private final DigestBuilder digestBuilder;
     private final MessageSourceHelper messageSource;
     private final TelegramBot digestBot;
+    private final BotHelper helper;
 
     @Override
     public void process(Update update) {
@@ -54,21 +56,22 @@ public class BuildDigestBotOperation implements BotOperation {
         }
 
         digestBot.execute(new SendMessage(
-                getChatId(update),
+                helper.getChatId(update),
                 builder.toString()
         ).parseMode(ParseMode.Markdown));
     }
 
     @Override
     public boolean supports(Update update) {
-        var botChat = chatService.findChat(getChatId(update));
+        var botChat = chatService.findChat(helper.getChatId(update));
 
         return StringUtils.equalsIgnoreCase(
                 botChat.chatStatus(),
                 "CREATED"
-        ) && StringUtils.equalsIgnoreCase(
-                getMessage(update),
-                "/digest"
+        ) && StringUtils.equalsAnyIgnoreCase(
+                helper.getMessage(update),
+                "/digest",
+                messageSource.getMessage("bot.digest.button.digest", update)
         );
     }
 }

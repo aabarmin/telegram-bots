@@ -3,6 +3,7 @@ package dev.abarmin.bots.rss.digest;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
+import dev.abarmin.bots.core.BotHelper;
 import dev.abarmin.bots.core.BotOperation;
 import dev.abarmin.bots.core.MessageSourceHelper;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,7 @@ import java.util.Collection;
 )
 public class DigestBotListener {
     private final TelegramBot digestBot;
+    private final BotHelper helper;
     private final MessageSourceHelper messageSource;
     private final Collection<BotOperation> operations;
 
@@ -37,8 +39,11 @@ public class DigestBotListener {
 
     private void notSupported(Update update) {
         digestBot.execute(new SendMessage(
-                update.message().chat().id(),
-                messageSource.getMessage("bot.digest.not-supported")
+                helper.getChatId(update),
+                messageSource.getMessage(
+                        "bot.digest.not-supported",
+                        update
+                )
         ));
     }
 }

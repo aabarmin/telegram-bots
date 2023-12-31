@@ -26,13 +26,4 @@ public class MessageSourceHelper {
                         .orElse("en"))
         );
     }
-
-    @Deprecated
-    public String getMessage(String template, Object... params) {
-        return messageSource.getMessage(
-                template,
-                params,
-                Locale.forLanguageTag("ru-RU")
-        );
-    }
 }
