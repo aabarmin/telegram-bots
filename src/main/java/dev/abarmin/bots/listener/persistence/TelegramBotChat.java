@@ -26,4 +26,14 @@ public record TelegramBotChat(
                 null
         );
     }
+
+    public TelegramBotChat withStatus(String chatStatus) {
+        return new TelegramBotChat(
+                id(),
+                chatId(),
+                chatStatus,
+                createdAt(),
+                LocalDateTime.now()
+        );
+    }
 }

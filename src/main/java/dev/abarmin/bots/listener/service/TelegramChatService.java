@@ -10,4 +10,13 @@ public interface TelegramChatService {
      * @return
      */
     TelegramBotChat findChat(long chatId);
+
+    /**
+     * Update status of a given chat to the following.
+     *
+     * @param chat
+     * @param status
+     * @return
+     */
+    TelegramBotChat updateStatus(TelegramBotChat chat, String status);
 }

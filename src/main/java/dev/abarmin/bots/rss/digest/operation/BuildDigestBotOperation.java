@@ -36,7 +36,7 @@ public class BuildDigestBotOperation implements BotOperation {
                 LocalDate.now()
         ));
 
-        Digest digest = digestBuilder.create();
+        Digest digest = digestBuilder.create(helper.getChat(update));
         for (DigestSource source : digest.sources()) {
             builder.append(String.format(
                     "\n*%s*\n",
