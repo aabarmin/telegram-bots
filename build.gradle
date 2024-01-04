@@ -31,11 +31,17 @@ dependencies {
 	implementation 'com.apptasticsoftware:rssreader:3.5.0'
 	implementation 'com.github.pengrad:java-telegram-bot-api:6.9.1'
 
-	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'com.h2database:h2'
+
 	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
-	annotationProcessor 'org.projectlombok:lombok'
+
+	'org.projectlombok:lombok'.with {
+		compileOnly it
+		testCompileOnly it
+		annotationProcessor it
+		testAnnotationProcessor it
+	}
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'

@@ -15,7 +15,7 @@ http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
                         nullable="false" notNullConstraintName="chat_id_not_null"
                 />
             </column>
-            <column name="ARTICLE_SOURCE_ID" type="long">
+            <column name="ARTICLE_SOURCE_ID" type="int">
                 <constraints
                         nullable="false" notNullConstraintName="article_source_id_not_null"
                 />
