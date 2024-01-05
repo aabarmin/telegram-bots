@@ -28,7 +28,7 @@ class BotsApplicationRssDigestTest {
 
     @Test
     void rssListener_canConsumeMessage() {
-		long chatId = new Random().nextLong();
+		long chatId = new Random().nextInt();
 		publisher.publish("/start", chatId, message -> {
 			var responseText = (String) message.getParameters().get("text");
 			assertThat(responseText).contains("Hello, I am an RSS Reader!");

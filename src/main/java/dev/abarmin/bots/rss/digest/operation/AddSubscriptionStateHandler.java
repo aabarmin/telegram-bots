@@ -75,9 +75,13 @@ public class AddSubscriptionStateHandler implements BotOperation {
                 "Added to your subscriptions"
         )
                 .replyMarkup(new ReplyKeyboardMarkup(
-                        new KeyboardButton(messageSource.getMessage("bot.digest.button.back", update)),
-                        new KeyboardButton(messageSource.getMessage("bot.digest.button.subscriptions-add", update)),
-                        new KeyboardButton("Delete subscription")
+                        new KeyboardButton[]{
+                                new KeyboardButton(messageSource.getMessage("bot.digest.button.back", update)),
+                        },
+                        new KeyboardButton[]{
+                                new KeyboardButton(messageSource.getMessage("bot.digest.button.subscriptions-add", update)),
+                                new KeyboardButton(messageSource.getMessage("bot.digest.button.subscriptions-delete", update))
+                        }
                 ));
         telegramBot.execute(sendMessage);
     }
