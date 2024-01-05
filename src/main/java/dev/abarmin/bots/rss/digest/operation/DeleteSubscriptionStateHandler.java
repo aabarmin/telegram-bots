@@ -47,7 +47,7 @@ public class DeleteSubscriptionStateHandler implements BotOperation {
     private void processInvalidMessage(Update update) {
         telegramBot.execute(new SendMessage(
                 helper.getChatId(update),
-                "Doesn't look like a valid number, type back to return"
+                messageSource.getMessage("bot.digest.button.subscriptions-delete-invalid-number", update)
         ));
     }
 
@@ -60,7 +60,7 @@ public class DeleteSubscriptionStateHandler implements BotOperation {
 
         telegramBot.execute(new SendMessage(
                 helper.getChatId(update),
-                "Unsubscribed"
+                messageSource.getMessage("bot.digest.button.subscriptions-delete-success", update)
         ));
 
         eventPublisher.publishEvent(new DigestBotUpdate(
@@ -87,7 +87,9 @@ public class DeleteSubscriptionStateHandler implements BotOperation {
 
         var message = new SendMessage(
                 helper.getChatId(update),
-                "Reply with a number of a subscription to cancel (or Back to return): \n\n" + subscriptions
+                messageSource.getMessage("bot.digest.button.subscriptions-delete-request", update)
+                        + "\n\n"
+                        + subscriptions
         ).replyMarkup(new ReplyKeyboardRemove());
 
         telegramBot.execute(message);

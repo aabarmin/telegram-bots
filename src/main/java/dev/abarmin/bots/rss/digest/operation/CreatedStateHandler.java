@@ -57,7 +57,7 @@ public class CreatedStateHandler implements BotOperation {
 
         telegramBot.execute(new SendMessage(
                 helper.getChatId(update),
-                "Great! Now you can start reading your digest!"
+                messageSource.getMessage("bot.digest.button.subscriptions-add-recommended-success", update)
         ));
 
         eventPublisher.publishEvent(new DigestBotUpdate(
