@@ -5,29 +5,24 @@ import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.model.request.ParseMode;
 import com.pengrad.telegrambot.request.SendMessage;
 import dev.abarmin.bots.core.BotHelper;
-import dev.abarmin.bots.core.BotOperation;
 import dev.abarmin.bots.core.MessageSourceHelper;
-import dev.abarmin.bots.listener.service.TelegramChatService;
 import dev.abarmin.bots.rss.reader.digest.Digest;
 import dev.abarmin.bots.rss.reader.digest.DigestBuilder;
 import dev.abarmin.bots.rss.reader.digest.DigestItem;
 import dev.abarmin.bots.rss.reader.digest.DigestSource;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 
 @Component
 @RequiredArgsConstructor
-public class BuildDigestBotOperation implements BotOperation {
-    private final TelegramChatService chatService;
+public class DigestOperationProcessor {
     private final DigestBuilder digestBuilder;
     private final MessageSourceHelper messageSource;
     private final TelegramBot digestBot;
     private final BotHelper helper;
 
-    @Override
     public void process(Update update) {
         StringBuilder builder = new StringBuilder();
         builder.append(messageSource.getMessage(
@@ -59,19 +54,5 @@ public class BuildDigestBotOperation implements BotOperation {
                 helper.getChatId(update),
                 builder.toString()
         ).parseMode(ParseMode.Markdown));
-    }
-
-    @Override
-    public boolean supports(Update update) {
-        var botChat = chatService.findChat(helper.getChatId(update));
-
-        return StringUtils.equalsIgnoreCase(
-                botChat.chatStatus(),
-                "CREATED"
-        ) && StringUtils.equalsAnyIgnoreCase(
-                helper.getMessage(update),
-                "/digest",
-                messageSource.getMessage("bot.digest.button.digest", update)
-        );
     }
 }

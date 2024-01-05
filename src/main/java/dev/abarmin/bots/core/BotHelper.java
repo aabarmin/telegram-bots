@@ -8,6 +8,7 @@ import dev.abarmin.bots.listener.service.TelegramChatService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
+import org.springframework.util.ReflectionUtils;
 
 import java.util.Optional;
 
@@ -33,5 +34,14 @@ public class BotHelper {
                 .map(Update::message)
                 .map(Message::text)
                 .orElse(StringUtils.EMPTY);
+    }
+
+    public Update withMessage(Update update, String message) {
+        var telegramMessage = update.message();
+        ReflectionUtils.doWithFields(Message.class, field -> {
+            field.setAccessible(true);
+            field.set(telegramMessage, message);
+        }, field -> field.getName().equals("text"));
+        return update;
     }
 }
