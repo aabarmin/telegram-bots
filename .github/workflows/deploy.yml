@@ -57,3 +57,24 @@ jobs:
           port: ${{ secrets.SERVER_PORT }}
           source: "./app.jar"
           target: /opt/app/${{ github.event.inputs.VERSION }}
+      - name: Stop existing app
+        uses: appleboy/ssh-action@v1.0.2
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          password: ${{ secrets.SERVER_PASSWORD }}
+          port: ${{ secrets.SERVER_PORT }}
+          script: |
+            APP_PID=$(jps | grep app.jar | grep -Eo '\d+')
+            kill -9 $APP_PID
+      - name: Start new app
+        uses: appleboy/ssh-action@v1.0.2
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          password: ${{ secrets.SERVER_PASSWORD }}
+          port: ${{ secrets.SERVER_PORT }}
+          script: |
+            cd /opt/app/
+            ln -s /opt/app/${{ github.event.inputs.VERSION }}/app.jar app.jar
+            ./run.sh
