@@ -63,7 +63,7 @@ public class SubscriptionsStateHandler implements BotOperation {
         chatService.updateStatus(helper.getChat(update), "CREATED");
         telegramBot.execute(new SendMessage(
                 helper.getChatId(update),
-                "Getting back to the main menu"
+                messageSource.getMessage("bot.digest.button.subscriptions-back-success", update)
         ));
         eventPublisher.publishEvent(new DigestBotUpdate(update));
     }
@@ -97,7 +97,9 @@ public class SubscriptionsStateHandler implements BotOperation {
 
         var message = new SendMessage(
                 helper.getChatId(update),
-                "Managing subscriptions, you're subscribed to the following sources: \n\n" + sources
+                messageSource.getMessage("bot.digest.button.subscriptions-manage", update)
+                        + "\n\n"
+                        + sources
         )
                 .replyMarkup(new ReplyKeyboardMarkup(
                         new KeyboardButton[]{

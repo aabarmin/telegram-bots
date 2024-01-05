@@ -47,7 +47,7 @@ public class AddSubscriptionStateHandler implements BotOperation {
     private void processAddSubscription(Update update) {
         telegramBot.execute(new SendMessage(
                 helper.getChatId(update),
-                "Enter URL of a subscription or Back to return"
+                messageSource.getMessage("bot.digest.button.subscriptions-add-request", update)
         ).replyMarkup(new ReplyKeyboardRemove()));
     }
 
@@ -61,7 +61,7 @@ public class AddSubscriptionStateHandler implements BotOperation {
     private void processInvalidRss(Update update) {
         telegramBot.execute(new SendMessage(
                 helper.getChatId(update),
-                "Provided URL is not a valid RSS. Enter URL of a subscription or Back to return"
+                messageSource.getMessage("bot.digest.button.subscriptions-add-invalid-url", update)
         ));
     }
 
@@ -72,7 +72,7 @@ public class AddSubscriptionStateHandler implements BotOperation {
 
         var sendMessage = new SendMessage(
                 helper.getChatId(update),
-                "Added to your subscriptions"
+                messageSource.getMessage("bot.digest.button.subscriptions-added", update)
         )
                 .replyMarkup(new ReplyKeyboardMarkup(
                         new KeyboardButton[]{
