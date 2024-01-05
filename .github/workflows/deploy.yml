@@ -41,6 +41,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Deploy
     environment: Production
+    needs: build
     steps:
       - name: Download artifact
         uses: actions/download-artifact@v4
@@ -48,7 +49,7 @@ jobs:
           name: artifact
           path: ./app.jar
       - name: Upload to the server
-        uses: actions/scp-action@v0.1.7
+        uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USERNAME }}
