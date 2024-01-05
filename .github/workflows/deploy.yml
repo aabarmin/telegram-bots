@@ -76,5 +76,5 @@ jobs:
           port: ${{ secrets.SERVER_PORT }}
           script: |
             cd /opt/app/
-            ln -s /opt/app/${{ github.event.inputs.VERSION }}/app.jar app.jar
+            ln -fs /opt/app/${{ github.event.inputs.VERSION }}/app.jar app.jar
             ./run.sh
