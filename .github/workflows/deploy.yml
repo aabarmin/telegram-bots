@@ -66,7 +66,7 @@ jobs:
           port: ${{ secrets.SERVER_PORT }}
           script: |
             APP_PID=$(/home/${{ secrets.SERVER_USERNAME }}/.sdkman/candidates/java/21.0.1-amzn/bin/jps | grep app.jar | grep -Eo '[0-9]+')
-            kill -9 $APP_PID
+            kill $APP_PID
       - name: Start new app
         uses: appleboy/ssh-action@v1.0.2
         with:
