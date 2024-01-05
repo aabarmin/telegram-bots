@@ -26,10 +26,13 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 
 	implementation 'org.liquibase:liquibase-core'
 	implementation 'com.apptasticsoftware:rssreader:3.5.0'
 	implementation 'com.github.pengrad:java-telegram-bot-api:6.9.1'
+	implementation 'org.webjars.npm:github-com-twbs-bootstrap:5.2.3'
+	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
 
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'com.h2database:h2'
