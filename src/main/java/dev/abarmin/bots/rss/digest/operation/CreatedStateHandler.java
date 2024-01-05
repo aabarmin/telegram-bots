@@ -82,12 +82,16 @@ public class CreatedStateHandler implements BotOperation {
                 messageSource.getMessage("bot.digest.start", update)
         )
                 .replyMarkup(new ReplyKeyboardMarkup(
-                        new KeyboardButton(
-                                messageSource.getMessage("bot.digest.button.digest", update)
-                        ),
-                        new KeyboardButton(
-                                messageSource.getMessage("bot.digest.button.subscriptions", update)
-                        )
+                        new KeyboardButton[] {
+                                new KeyboardButton(
+                                        messageSource.getMessage("bot.digest.button.digest", update)
+                                )
+                        },
+                        new KeyboardButton[] {
+                                new KeyboardButton(
+                                        messageSource.getMessage("bot.digest.button.subscriptions", update)
+                                )
+                        }
                 ));
         telegramBot.execute(message);
     }

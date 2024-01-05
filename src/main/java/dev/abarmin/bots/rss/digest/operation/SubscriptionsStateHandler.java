@@ -100,9 +100,13 @@ public class SubscriptionsStateHandler implements BotOperation {
                 "Managing subscriptions, you're subscribed to the following sources: \n\n" + sources
         )
                 .replyMarkup(new ReplyKeyboardMarkup(
-                        new KeyboardButton(messageSource.getMessage("bot.digest.button.back", update)),
-                        new KeyboardButton(messageSource.getMessage("bot.digest.button.subscriptions-add", update)),
-                        new KeyboardButton(messageSource.getMessage("bot.digest.button.subscriptions-delete", update))
+                        new KeyboardButton[]{
+                                new KeyboardButton(messageSource.getMessage("bot.digest.button.back", update)),
+                        },
+                        new KeyboardButton[]{
+                                new KeyboardButton(messageSource.getMessage("bot.digest.button.subscriptions-add", update)),
+                                new KeyboardButton(messageSource.getMessage("bot.digest.button.subscriptions-delete", update))
+                        }
                 ));
         telegramBot.execute(message);
     }
