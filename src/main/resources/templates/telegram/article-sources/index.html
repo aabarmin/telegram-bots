@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en"
+      layout:decorate="~{layout.html}"
+      xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="">
+<head>
+    <meta charset="UTF-8">
+    <title>Article Sources</title>
+</head>
+<body>
+<th:block layout:fragment="main-content">
+
+    <div class="row">
+        <h2>Article Sources</h2>
+    </div>
+
+    <div class="row">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Source Name</th>
+                <th>Source URL</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="source : ${sources}">
+                <td th:text="${source.sourceName}"></td>
+                <td th:text="${source.sourceUri}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</th:block>
+</body>
+</html>
