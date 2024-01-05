@@ -65,6 +65,7 @@ jobs:
           password: ${{ secrets.SERVER_PASSWORD }}
           port: ${{ secrets.SERVER_PORT }}
           script: |
+            source ./profile
             echo $PATH
             APP_PID=$(jps | grep app.jar | grep -Eo '[0-9]+')
             kill -9 $APP_PID
