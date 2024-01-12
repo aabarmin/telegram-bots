@@ -1,4 +1,4 @@
-package dev.abarmin.bots.listener.service;
+package dev.abarmin.bots.service;
 
 import dev.abarmin.bots.listener.persistence.TelegramBotChat;
 

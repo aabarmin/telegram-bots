@@ -3,7 +3,7 @@ package dev.abarmin.bots.rss.digest.operation;
 import com.pengrad.telegrambot.model.Update;
 import dev.abarmin.bots.core.BotHelper;
 import dev.abarmin.bots.core.BotOperation;
-import dev.abarmin.bots.listener.service.TelegramChatService;
+import dev.abarmin.bots.service.TelegramChatService;
 import dev.abarmin.bots.rss.digest.DigestBotUpdate;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;

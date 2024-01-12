@@ -72,18 +72,6 @@ public class ArchUnitControllerTest {
     }
 
     @Test
-    @Disabled
-    @DisplayName("Services should be in service package only")
-    void services_shouldBeInServicesPackageOnly() {
-        classes().that()
-                .areAnnotatedWith(Service.class).or()
-                .haveSimpleNameEndingWith("Service")
-                .should()
-                .resideInAPackage("dev.abarmin.bots.service")
-                .check(importedClasses);
-    }
-
-    @Test
     @DisplayName("Controllers should have name ending with Controller")
     void controllers_shouldBeNamedProperly() {
         classes().that()

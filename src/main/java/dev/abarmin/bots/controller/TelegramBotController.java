@@ -5,7 +5,7 @@ import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SetWebhook;
 import dev.abarmin.bots.service.TelegramUpdateService;
-import dev.abarmin.bots.rss.digest.DigestBotProperties;
+import dev.abarmin.bots.config.DigestBotProperties;
 import dev.abarmin.bots.rss.digest.DigestBotUpdate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -1,13 +1,12 @@
 package dev.abarmin.bots.rss.reader;
 
 import dev.abarmin.bots.rss.reader.service.ArticleReader;
-import dev.abarmin.bots.rss.reader.service.ArticleService;
-import dev.abarmin.bots.rss.reader.service.ArticleSourceService;
+import dev.abarmin.bots.service.ArticleService;
+import dev.abarmin.bots.service.ArticleSourceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 

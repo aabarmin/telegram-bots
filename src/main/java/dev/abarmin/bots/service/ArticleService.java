@@ -1,4 +1,4 @@
-package dev.abarmin.bots.rss.reader.service;
+package dev.abarmin.bots.service;
 
 import dev.abarmin.bots.rss.reader.persistence.Article;
 

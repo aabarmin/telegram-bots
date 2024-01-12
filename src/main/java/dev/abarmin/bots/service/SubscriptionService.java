@@ -1,4 +1,4 @@
-package dev.abarmin.bots.rss.digest.service;
+package dev.abarmin.bots.service;
 
 import dev.abarmin.bots.listener.persistence.TelegramBotChat;
 import dev.abarmin.bots.rss.digest.persistence.ArticleSubscription;

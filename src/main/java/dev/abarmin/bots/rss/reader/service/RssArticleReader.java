@@ -5,6 +5,7 @@ import com.apptasticsoftware.rssreader.RssReader;
 import dev.abarmin.bots.rss.reader.persistence.Article;
 import dev.abarmin.bots.rss.reader.persistence.ArticleSource;
 import dev.abarmin.bots.rss.reader.persistence.ArticleSourceRepository;
+import dev.abarmin.bots.service.ArticleService;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;

@@ -1,4 +1,4 @@
-package dev.abarmin.bots.rss.digest;
+package dev.abarmin.bots.config;
 
 import jakarta.validation.constraints.NotEmpty;
 import org.springframework.boot.context.properties.ConfigurationProperties;

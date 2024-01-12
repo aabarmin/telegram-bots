@@ -1,7 +1,6 @@
 package dev.abarmin.bots.config;
 
 import com.pengrad.telegrambot.TelegramBot;
-import dev.abarmin.bots.rss.digest.DigestBotProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;

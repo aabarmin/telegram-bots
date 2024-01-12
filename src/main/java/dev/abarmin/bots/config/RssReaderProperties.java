@@ -1,4 +1,4 @@
-package dev.abarmin.bots.rss.reader.config;
+package dev.abarmin.bots.config;
 
 import jakarta.validation.constraints.NotNull;
 import org.springframework.boot.context.properties.ConfigurationProperties;
