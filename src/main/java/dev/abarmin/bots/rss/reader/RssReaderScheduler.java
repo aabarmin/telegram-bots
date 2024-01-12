@@ -1,6 +1,6 @@
 package dev.abarmin.bots.rss.reader;
 
-import dev.abarmin.bots.rss.reader.service.ArticleReader;
+import dev.abarmin.bots.service.ArticleReaderService;
 import dev.abarmin.bots.service.ArticleService;
 import dev.abarmin.bots.service.ArticleSourceService;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +20,7 @@ import java.util.Collection;
 )
 public class RssReaderScheduler {
     private final ArticleSourceService sourceService;
-    private final ArticleReader articleReader;
+    private final ArticleReaderService articleReader;
     private final ArticleService articleService;
 
     @Scheduled(

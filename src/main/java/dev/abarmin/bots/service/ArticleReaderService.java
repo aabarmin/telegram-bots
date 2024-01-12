@@ -1,11 +1,11 @@
-package dev.abarmin.bots.rss.reader.service;
+package dev.abarmin.bots.service;
 
 import dev.abarmin.bots.rss.reader.persistence.Article;
 import dev.abarmin.bots.rss.reader.persistence.ArticleSource;
 
 import java.util.Collection;
 
-public interface ArticleReader {
+public interface ArticleReaderService {
     /**
      * Read articles from given source. Return all the articles including
      * already read.

@@ -6,7 +6,6 @@ import dev.abarmin.bots.rss.digest.persistence.ArticleSubscriptionRepository;
 import dev.abarmin.bots.rss.reader.persistence.ArticleSource;
 import dev.abarmin.bots.rss.reader.persistence.ArticleSourceRepository;
 import dev.abarmin.bots.service.ArticleSourceService;
-import dev.abarmin.bots.rss.reader.service.RssArticleReader;
 import dev.abarmin.bots.service.SubscriptionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
@@ -22,7 +21,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class SubscriptionServiceImpl implements SubscriptionService {
     private final ArticleSourceService sourceService;
-    private final RssArticleReader articleReader;
+    private final RssArticleReaderServiceImpl articleReader;
     private final ArticleSubscriptionRepository repository;
     private final ArticleSourceRepository sourceRepository;
 

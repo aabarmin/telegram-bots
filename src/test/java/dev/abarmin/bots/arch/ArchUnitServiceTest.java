@@ -1,5 +1,6 @@
 package dev.abarmin.bots.arch;
 
+import com.tngtech.archunit.core.domain.JavaClass;
 import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
 import org.junit.jupiter.api.DisplayName;
@@ -33,6 +34,17 @@ public class ArchUnitServiceTest {
                 .should()
                 .resideInAPackage("dev.abarmin.bots.service.impl").andShould()
                 .beAnnotatedWith(Service.class)
+                .check(importedClasses);
+    }
+
+    @Test
+    @DisplayName("Service implementations should be annotated with Service annotation")
+    void service_implementationsShouldBeAnnotatedWithServiceAnnotation() {
+        classes().that()
+                .implement(JavaClass.Predicates.simpleNameEndingWith("Service"))
+                .should()
+                .beAnnotatedWith(Service.class).andShould()
+                .haveSimpleNameEndingWith("ServiceImpl")
                 .check(importedClasses);
     }
 }
