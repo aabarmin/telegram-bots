@@ -1,5 +1,6 @@
-package dev.abarmin.bots.rss.admin;
+package dev.abarmin.bots.controller;
 
+import dev.abarmin.bots.controller.ArticleSourceController;
 import dev.abarmin.bots.rss.reader.persistence.ArticleSourceRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package dev.abarmin.bots.core;
+package dev.abarmin.bots.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

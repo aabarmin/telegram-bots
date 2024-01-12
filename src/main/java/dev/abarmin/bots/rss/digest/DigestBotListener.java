@@ -9,11 +9,12 @@ import dev.abarmin.bots.core.MessageSourceHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.event.EventListener;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 
-@Service
+@Component
 @RequiredArgsConstructor
 @ConditionalOnProperty(
         prefix = "telegram.bot.rss.digest",

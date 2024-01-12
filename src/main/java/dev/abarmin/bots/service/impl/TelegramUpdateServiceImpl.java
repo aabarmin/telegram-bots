@@ -1,10 +1,12 @@
-package dev.abarmin.bots.listener.service;
+package dev.abarmin.bots.service.impl;
 
 import com.pengrad.telegrambot.model.Chat;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
 import dev.abarmin.bots.listener.persistence.TelegramBotUpdate;
 import dev.abarmin.bots.listener.persistence.TelegramBotUpdateRepository;
+import dev.abarmin.bots.listener.service.TelegramChatService;
+import dev.abarmin.bots.service.TelegramUpdateService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;

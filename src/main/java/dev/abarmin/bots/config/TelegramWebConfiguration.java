@@ -1,4 +1,4 @@
-package dev.abarmin.bots.rss.admin;
+package dev.abarmin.bots.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;

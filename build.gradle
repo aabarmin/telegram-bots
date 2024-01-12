@@ -21,6 +21,13 @@ repositories {
 	mavenCentral()
 }
 
+ext {
+	set('archunitVersion', '1.2.1')
+	set('rssReaderVersion', '3.5.0')
+	set('telegramBotApiVersion', '6.9.1')
+	set('twitterBootstrapVersion', '5.2.3')
+}
+
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
@@ -29,9 +36,9 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 
 	implementation 'org.liquibase:liquibase-core'
-	implementation 'com.apptasticsoftware:rssreader:3.5.0'
-	implementation 'com.github.pengrad:java-telegram-bot-api:6.9.1'
-	implementation 'org.webjars.npm:github-com-twbs-bootstrap:5.2.3'
+	implementation "com.apptasticsoftware:rssreader:${rssReaderVersion}"
+	implementation "com.github.pengrad:java-telegram-bot-api:${telegramBotApiVersion}"
+	implementation "org.webjars.npm:github-com-twbs-bootstrap:${twitterBootstrapVersion}"
 	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
 
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
@@ -48,6 +55,7 @@ dependencies {
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
+	testImplementation "com.tngtech.archunit:archunit:${archunitVersion}"
 }
 
 tasks.named('test') {

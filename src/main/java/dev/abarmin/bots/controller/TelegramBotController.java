@@ -1,10 +1,10 @@
-package dev.abarmin.bots.listener;
+package dev.abarmin.bots.controller;
 
 import com.google.gson.Gson;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SetWebhook;
-import dev.abarmin.bots.listener.service.TelegramUpdateService;
+import dev.abarmin.bots.service.TelegramUpdateService;
 import dev.abarmin.bots.rss.digest.DigestBotProperties;
 import dev.abarmin.bots.rss.digest.DigestBotUpdate;
 import lombok.RequiredArgsConstructor;

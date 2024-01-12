@@ -1,4 +1,4 @@
-package dev.abarmin.bots.rss.admin;
+package dev.abarmin.bots.controller;
 
 import dev.abarmin.bots.rss.reader.persistence.ArticleSourceRepository;
 import lombok.RequiredArgsConstructor;

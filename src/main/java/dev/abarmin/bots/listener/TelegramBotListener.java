@@ -3,18 +3,18 @@ package dev.abarmin.bots.listener;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
 import com.pengrad.telegrambot.request.DeleteWebhook;
-import dev.abarmin.bots.listener.service.TelegramUpdateService;
+import dev.abarmin.bots.service.TelegramUpdateService;
 import dev.abarmin.bots.rss.digest.DigestBotUpdate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.util.function.Predicate;
 
-@Service
+@Component
 @RequiredArgsConstructor
 @ConditionalOnProperty(
         prefix = "telegram.bot.listener.polling",

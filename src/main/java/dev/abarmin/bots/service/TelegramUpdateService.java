@@ -1,4 +1,4 @@
-package dev.abarmin.bots.listener.service;
+package dev.abarmin.bots.service;
 
 import com.pengrad.telegrambot.model.Update;
 

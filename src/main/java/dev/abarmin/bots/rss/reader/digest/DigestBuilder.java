@@ -7,12 +7,13 @@ import dev.abarmin.bots.rss.reader.persistence.ArticleSource;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Limit;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.stream.Collectors;
 
-@Service
+@Component
 @RequiredArgsConstructor
 public class DigestBuilder {
     private final ArticleRepository articleRepository;

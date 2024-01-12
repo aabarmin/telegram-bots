@@ -1,4 +1,4 @@
-package dev.abarmin.bots.rss.admin;
+package dev.abarmin.bots.controller;
 
 import dev.abarmin.bots.listener.persistence.TelegramBotChatRepository;
 import lombok.RequiredArgsConstructor;

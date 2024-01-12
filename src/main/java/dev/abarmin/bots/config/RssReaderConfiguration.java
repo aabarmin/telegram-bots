@@ -1,4 +1,4 @@
-package dev.abarmin.bots.rss.reader.config;
+package dev.abarmin.bots.config;
 
 import com.apptasticsoftware.rssreader.RssReader;
 import org.springframework.context.annotation.Bean;
