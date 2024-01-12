@@ -47,4 +47,29 @@ public class ArchUnitServiceTest {
                 .haveSimpleNameEndingWith("ServiceImpl")
                 .check(importedClasses);
     }
+
+    @Test
+    @DisplayName("Service without interface should be annotated with Service")
+    void service_withoutInterfaceShouldBeAnnotatedWithService() {
+        classes().that()
+                .areNotInterfaces().and()
+                .haveSimpleNameEndingWith("Service")
+                .should()
+                .beAnnotatedWith(Service.class).andShould()
+                .resideInAPackage("dev.abarmin.bots.service")
+                .check(importedClasses);
+    }
+
+    @Test
+    @DisplayName("Service should not use autowired")
+    void service_shouldNotUseAutowired() {
+        classes().that()
+                .resideInAnyPackage(
+                        "dev.abarmin.bots.service",
+                        "dev.abarmin.bots.service.impl"
+                )
+                .should()
+                .haveOnlyFinalFields()
+                .check(importedClasses);
+    }
 }

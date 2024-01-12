@@ -7,7 +7,7 @@ import com.pengrad.telegrambot.request.SendMessage;
 import dev.abarmin.bots.core.BotHelper;
 import dev.abarmin.bots.core.MessageSourceHelper;
 import dev.abarmin.bots.rss.reader.digest.Digest;
-import dev.abarmin.bots.rss.reader.digest.DigestBuilder;
+import dev.abarmin.bots.service.DigestBuildingService;
 import dev.abarmin.bots.rss.reader.digest.DigestItem;
 import dev.abarmin.bots.rss.reader.digest.DigestSource;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +18,7 @@ import java.time.LocalDate;
 @Component
 @RequiredArgsConstructor
 public class DigestOperationProcessor {
-    private final DigestBuilder digestBuilder;
+    private final DigestBuildingService digestBuilder;
     private final MessageSourceHelper messageSource;
     private final TelegramBot digestBot;
     private final BotHelper helper;
