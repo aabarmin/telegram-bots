@@ -1,4 +1,4 @@
-package dev.abarmin.bots.rss.reader;
+package dev.abarmin.bots.scheduler;
 
 import dev.abarmin.bots.service.ArticleReaderService;
 import dev.abarmin.bots.service.ArticleService;
