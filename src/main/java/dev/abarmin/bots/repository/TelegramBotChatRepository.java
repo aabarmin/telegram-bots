@@ -1,5 +1,6 @@
-package dev.abarmin.bots.rss.persistence;
+package dev.abarmin.bots.repository;
 
+import dev.abarmin.bots.rss.persistence.TelegramBotChat;
 import org.springframework.data.repository.ListCrudRepository;
 import org.springframework.data.repository.ListPagingAndSortingRepository;
 

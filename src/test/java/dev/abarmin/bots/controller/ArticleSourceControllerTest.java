@@ -1,7 +1,6 @@
 package dev.abarmin.bots.controller;
 
-import dev.abarmin.bots.controller.ArticleSourceController;
-import dev.abarmin.bots.rss.reader.persistence.ArticleSourceRepository;
+import dev.abarmin.bots.repository.ArticleSourceRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;

@@ -1,5 +1,7 @@
-package dev.abarmin.bots.rss.reader.persistence;
+package dev.abarmin.bots.repository;
 
+import dev.abarmin.bots.rss.reader.persistence.Article;
+import dev.abarmin.bots.rss.reader.persistence.ArticleSource;
 import org.springframework.data.domain.Limit;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.data.repository.CrudRepository;

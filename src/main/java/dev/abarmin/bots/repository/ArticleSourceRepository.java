@@ -1,5 +1,6 @@
-package dev.abarmin.bots.rss.reader.persistence;
+package dev.abarmin.bots.repository;
 
+import dev.abarmin.bots.rss.reader.persistence.ArticleSource;
 import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.data.repository.ListCrudRepository;
 

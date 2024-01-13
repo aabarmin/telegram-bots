@@ -1,7 +1,7 @@
 package dev.abarmin.bots.service.impl;
 
 import dev.abarmin.bots.rss.reader.persistence.ArticleSource;
-import dev.abarmin.bots.rss.reader.persistence.ArticleSourceRepository;
+import dev.abarmin.bots.repository.ArticleSourceRepository;
 import dev.abarmin.bots.service.RecommendationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

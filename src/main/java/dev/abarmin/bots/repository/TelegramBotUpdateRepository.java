@@ -1,5 +1,6 @@
-package dev.abarmin.bots.rss.persistence;
+package dev.abarmin.bots.repository;
 
+import dev.abarmin.bots.rss.persistence.TelegramBotUpdate;
 import org.springframework.data.repository.ListCrudRepository;
 
 public interface TelegramBotUpdateRepository extends ListCrudRepository<TelegramBotUpdate, Integer> {

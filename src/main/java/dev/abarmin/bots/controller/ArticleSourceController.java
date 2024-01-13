@@ -1,6 +1,6 @@
 package dev.abarmin.bots.controller;
 
-import dev.abarmin.bots.rss.reader.persistence.ArticleSourceRepository;
+import dev.abarmin.bots.repository.ArticleSourceRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

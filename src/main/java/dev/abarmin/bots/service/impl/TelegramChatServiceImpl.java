@@ -1,7 +1,7 @@
 package dev.abarmin.bots.service.impl;
 
 import dev.abarmin.bots.rss.persistence.TelegramBotChat;
-import dev.abarmin.bots.rss.persistence.TelegramBotChatRepository;
+import dev.abarmin.bots.repository.TelegramBotChatRepository;
 import dev.abarmin.bots.service.TelegramChatService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

@@ -4,7 +4,7 @@ import com.pengrad.telegrambot.model.Chat;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
 import dev.abarmin.bots.rss.persistence.TelegramBotUpdate;
-import dev.abarmin.bots.rss.persistence.TelegramBotUpdateRepository;
+import dev.abarmin.bots.repository.TelegramBotUpdateRepository;
 import dev.abarmin.bots.service.TelegramChatService;
 import dev.abarmin.bots.service.TelegramUpdateService;
 import lombok.RequiredArgsConstructor;

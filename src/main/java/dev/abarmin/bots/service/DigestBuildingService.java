@@ -4,7 +4,7 @@ import dev.abarmin.bots.rss.persistence.TelegramBotChat;
 import dev.abarmin.bots.rss.reader.digest.Digest;
 import dev.abarmin.bots.rss.reader.digest.DigestItem;
 import dev.abarmin.bots.rss.reader.digest.DigestSource;
-import dev.abarmin.bots.rss.reader.persistence.ArticleRepository;
+import dev.abarmin.bots.repository.ArticleRepository;
 import dev.abarmin.bots.rss.reader.persistence.ArticleSource;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Limit;
