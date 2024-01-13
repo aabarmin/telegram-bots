@@ -27,7 +27,8 @@ public class DigestOperationProcessor {
     public void process(Update update) {
         var digest = converter.toMarkdown(
                 digestBuilder.create(helper.getChat(update)),
-                messageSource.getMessage("bot.digest.header", update, LocalDate.now())
+                messageSource.getMessage("bot.digest.header.last-5", update, LocalDate.now()),
+                messageSource.getMessage("bot.digest.no-updates", update)
         );
 
         digestBot.execute(new SendMessage(

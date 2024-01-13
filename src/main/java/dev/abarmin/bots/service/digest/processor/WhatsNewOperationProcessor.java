@@ -6,6 +6,7 @@ import com.pengrad.telegrambot.model.request.ParseMode;
 import com.pengrad.telegrambot.request.SendMessage;
 import dev.abarmin.bots.service.DigestService;
 import dev.abarmin.bots.service.support.BotHelper;
+import dev.abarmin.bots.service.support.MessageSourceHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +19,7 @@ public class WhatsNewOperationProcessor {
     private final DigestService digestService;
     private final BotHelper helper;
     private final DigestConverter converter;
+    private final MessageSourceHelper messageSource;
 
     public void process(Update update) {
         var digest = digestService.create(
@@ -27,7 +29,11 @@ public class WhatsNewOperationProcessor {
 
         telegramBot.execute(new SendMessage(
                 helper.getChatId(update),
-                converter.toMarkdown(digest, "What is new today")
+                converter.toMarkdown(
+                        digest,
+                        messageSource.getMessage("bot.digest.header.whats-new-today", update),
+                        messageSource.getMessage("bot.digest.no-updates", update)
+                )
         ).parseMode(ParseMode.Markdown));
     }
 }

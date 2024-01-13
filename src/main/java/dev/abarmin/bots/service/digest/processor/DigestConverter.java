@@ -9,9 +9,9 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class DigestConverter {
-    public String toMarkdown(Digest digest, String header) {
+    public String toMarkdown(Digest digest, String header, String noUpdatesMessage) {
         if (digest.isEmpty()) {
-            return "Nothing new today";
+            return noUpdatesMessage;
         }
         var parts = Lists.newArrayList();
         parts.add(header);
