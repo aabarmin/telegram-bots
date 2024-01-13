@@ -46,7 +46,7 @@ class BotsApplicationRssDigestTest {
 		// request a digest
 		publisher.publish("Get a digest", chatId, message -> {
 			var responseText = (String) message.getParameters().get("text");
-			assertThat(responseText).contains("Digest");
+			assertThat(responseText).contains("Nothing new today");
 		});
 	}
 

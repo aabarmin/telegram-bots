@@ -26,6 +26,7 @@ ext {
 	set('rssReaderVersion', '3.5.0')
 	set('telegramBotApiVersion', '6.9.1')
 	set('twitterBootstrapVersion', '5.2.3')
+	set('googleGuavaVersion', '31.0.1-jre')
 }
 
 dependencies {
@@ -40,6 +41,7 @@ dependencies {
 	implementation "com.github.pengrad:java-telegram-bot-api:${telegramBotApiVersion}"
 	implementation "org.webjars.npm:github-com-twbs-bootstrap:${twitterBootstrapVersion}"
 	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
+	implementation "com.google.guava:guava:${googleGuavaVersion}"
 
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'com.h2database:h2'
