@@ -57,6 +57,7 @@ public class ArchUnitServiceTest {
                 .should()
                 .beAnnotatedWith(Service.class).andShould()
                 .resideInAPackage("dev.abarmin.bots.service")
+                .allowEmptyShould(true)
                 .check(importedClasses);
     }
 

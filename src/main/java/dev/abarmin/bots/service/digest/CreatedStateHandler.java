@@ -5,6 +5,8 @@ import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.model.request.KeyboardButton;
 import com.pengrad.telegrambot.model.request.ReplyKeyboardMarkup;
 import com.pengrad.telegrambot.request.SendMessage;
+import dev.abarmin.bots.service.digest.processor.DigestOperationProcessor;
+import dev.abarmin.bots.service.digest.processor.WhatsNewOperationProcessor;
 import dev.abarmin.bots.service.support.BotHelper;
 import dev.abarmin.bots.service.support.BotOperation;
 import dev.abarmin.bots.service.support.MessageSourceHelper;
@@ -25,6 +27,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CreatedStateHandler implements BotOperation {
     private final DigestOperationProcessor buildDigestOperation;
+    private final WhatsNewOperationProcessor whatsNewOperation;
     private final ApplicationEventPublisher eventPublisher;
     private final TelegramChatService chatService;
     private final MessageSourceHelper messageSource;
@@ -39,6 +42,8 @@ public class CreatedStateHandler implements BotOperation {
             processStart(update);
         } else if (isDigest(update)) {
             buildDigestOperation.process(update);
+        } else if (isWhatsNewToday(update)) {
+            whatsNewOperation.process(update);
         } else if (isSubscriptions(update)) {
             processSubscriptions(update);
         } else if (isSubscribeToRecommended(update)) {
@@ -101,6 +106,13 @@ public class CreatedStateHandler implements BotOperation {
         );
     }
 
+    private boolean isWhatsNewToday(Update update) {
+        return StringUtils.equalsIgnoreCase(
+                helper.getMessage(update),
+                messageSource.getMessage("bot.digest.button.whats-new-today", update)
+        );
+    }
+
     private void processUnknown(Update update) {
         var message = new SendMessage(
                 helper.getChatId(update),
@@ -154,6 +166,9 @@ public class CreatedStateHandler implements BotOperation {
                         new KeyboardButton[] {
                                 new KeyboardButton(
                                         messageSource.getMessage("bot.digest.button.digest", update)
+                                ),
+                                new KeyboardButton(
+                                        messageSource.getMessage("bot.digest.button.whats-new-today", update)
                                 )
                         },
                         new KeyboardButton[] {
