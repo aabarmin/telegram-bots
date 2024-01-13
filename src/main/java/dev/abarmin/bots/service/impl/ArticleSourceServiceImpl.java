@@ -3,7 +3,7 @@ package dev.abarmin.bots.service.impl;
 import com.apptasticsoftware.rssreader.Channel;
 import com.apptasticsoftware.rssreader.Item;
 import com.apptasticsoftware.rssreader.RssReader;
-import dev.abarmin.bots.rss.reader.persistence.ArticleSource;
+import dev.abarmin.bots.entity.ArticleSource;
 import dev.abarmin.bots.repository.ArticleSourceRepository;
 import dev.abarmin.bots.service.ArticleSourceService;
 import lombok.RequiredArgsConstructor;

@@ -1,6 +1,6 @@
 package dev.abarmin.bots.service.impl;
 
-import dev.abarmin.bots.rss.reader.persistence.Article;
+import dev.abarmin.bots.entity.Article;
 import dev.abarmin.bots.repository.ArticleRepository;
 import dev.abarmin.bots.service.ArticleService;
 import lombok.RequiredArgsConstructor;

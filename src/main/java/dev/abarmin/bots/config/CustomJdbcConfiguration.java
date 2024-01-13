@@ -1,6 +1,6 @@
 package dev.abarmin.bots.config;
 
-import dev.abarmin.bots.core.UriJdbcConverter;
+import dev.abarmin.bots.service.support.UriJdbcConverter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jdbc.repository.config.AbstractJdbcConfiguration;
 

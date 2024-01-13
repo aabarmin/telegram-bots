@@ -1,4 +1,4 @@
-package dev.abarmin.bots.rss.digest.operation;
+package dev.abarmin.bots.service.digest;
 
 import com.apptasticsoftware.rssreader.RssReader;
 import com.pengrad.telegrambot.TelegramBot;
@@ -7,11 +7,11 @@ import com.pengrad.telegrambot.model.request.KeyboardButton;
 import com.pengrad.telegrambot.model.request.ReplyKeyboardMarkup;
 import com.pengrad.telegrambot.model.request.ReplyKeyboardRemove;
 import com.pengrad.telegrambot.request.SendMessage;
-import dev.abarmin.bots.core.BotHelper;
-import dev.abarmin.bots.core.BotOperation;
-import dev.abarmin.bots.core.MessageSourceHelper;
+import dev.abarmin.bots.service.support.BotHelper;
+import dev.abarmin.bots.service.support.BotOperation;
+import dev.abarmin.bots.service.support.MessageSourceHelper;
 import dev.abarmin.bots.service.TelegramChatService;
-import dev.abarmin.bots.rss.digest.DigestBotUpdate;
+import dev.abarmin.bots.model.DigestBotUpdate;
 import dev.abarmin.bots.service.SubscriptionService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;

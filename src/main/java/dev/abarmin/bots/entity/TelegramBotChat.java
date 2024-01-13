@@ -1,4 +1,4 @@
-package dev.abarmin.bots.rss.reader.persistence;
+package dev.abarmin.bots.entity;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
@@ -6,36 +6,32 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
-import java.net.URI;
 import java.time.LocalDateTime;
 
-@Table("ARTICLE_SOURCES")
-public record ArticleSource(
-        @Column("SOURCE_ID") @Id Integer id,
-        @Column("SOURCE_NAME") String sourceName,
-        @Column("SOURCE_URL") URI sourceUri,
-        @Column("SOURCE_LAST_UPDATED") LocalDateTime lastUpdated,
+@Table("TELEGRAM_CHATS")
+public record TelegramBotChat(
+        @Column("ID") @Id Integer id,
+        @Column("CHAT_ID") Long chatId,
+        @Column("CHAT_STATUS") String chatStatus,
         @Column("CREATED_AT") @CreatedDate LocalDateTime createdAt,
         @Column("UPDATED_AT") @LastModifiedDate LocalDateTime updatedAt
 ) {
 
-    public ArticleSource(String sourceName, URI sourceUri) {
+    public TelegramBotChat(long chatId, String chatStatus) {
         this(
                 null,
-                sourceName,
-                sourceUri,
-                null,
+                chatId,
+                chatStatus,
                 LocalDateTime.now(),
                 null
         );
     }
 
-    public ArticleSource withLastUpdated(LocalDateTime lastUpdated) {
-        return new ArticleSource(
+    public TelegramBotChat withStatus(String chatStatus) {
+        return new TelegramBotChat(
                 id(),
-                sourceName(),
-                sourceUri(),
-                lastUpdated,
+                chatId(),
+                chatStatus,
                 createdAt(),
                 LocalDateTime.now()
         );

@@ -1,4 +1,4 @@
-package dev.abarmin.bots.rss.reader.digest;
+package dev.abarmin.bots.model.digest;
 
 import java.util.Collection;
 

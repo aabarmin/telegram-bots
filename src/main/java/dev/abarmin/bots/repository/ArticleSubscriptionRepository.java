@@ -1,8 +1,8 @@
 package dev.abarmin.bots.repository;
 
-import dev.abarmin.bots.rss.digest.persistence.ArticleSubscription;
-import dev.abarmin.bots.rss.persistence.TelegramBotChat;
-import dev.abarmin.bots.rss.reader.persistence.ArticleSource;
+import dev.abarmin.bots.entity.ArticleSubscription;
+import dev.abarmin.bots.entity.TelegramBotChat;
+import dev.abarmin.bots.entity.ArticleSource;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.data.repository.ListCrudRepository;
 

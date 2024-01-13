@@ -1,10 +1,10 @@
-package dev.abarmin.bots.rss.digest.operation;
+package dev.abarmin.bots.service.digest;
 
 import com.pengrad.telegrambot.model.Update;
-import dev.abarmin.bots.core.BotHelper;
-import dev.abarmin.bots.core.BotOperation;
+import dev.abarmin.bots.service.support.BotHelper;
+import dev.abarmin.bots.service.support.BotOperation;
 import dev.abarmin.bots.service.TelegramChatService;
-import dev.abarmin.bots.rss.digest.DigestBotUpdate;
+import dev.abarmin.bots.model.DigestBotUpdate;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.ApplicationEventPublisher;

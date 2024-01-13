@@ -1,4 +1,4 @@
-package dev.abarmin.bots.rss.digest;
+package dev.abarmin.bots.model;
 
 import com.pengrad.telegrambot.model.Update;
 

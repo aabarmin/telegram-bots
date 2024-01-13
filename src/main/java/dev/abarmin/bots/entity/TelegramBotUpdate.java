@@ -1,4 +1,4 @@
-package dev.abarmin.bots.rss.persistence;
+package dev.abarmin.bots.entity;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;

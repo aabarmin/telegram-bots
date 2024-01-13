@@ -1,9 +1,9 @@
 package dev.abarmin.bots.service.impl;
 
-import dev.abarmin.bots.rss.persistence.TelegramBotChat;
-import dev.abarmin.bots.rss.digest.persistence.ArticleSubscription;
+import dev.abarmin.bots.entity.TelegramBotChat;
+import dev.abarmin.bots.entity.ArticleSubscription;
 import dev.abarmin.bots.repository.ArticleSubscriptionRepository;
-import dev.abarmin.bots.rss.reader.persistence.ArticleSource;
+import dev.abarmin.bots.entity.ArticleSource;
 import dev.abarmin.bots.repository.ArticleSourceRepository;
 import dev.abarmin.bots.service.ArticleSourceService;
 import dev.abarmin.bots.service.SubscriptionService;

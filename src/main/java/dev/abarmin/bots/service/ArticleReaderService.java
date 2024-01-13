@@ -1,7 +1,7 @@
 package dev.abarmin.bots.service;
 
-import dev.abarmin.bots.rss.reader.persistence.Article;
-import dev.abarmin.bots.rss.reader.persistence.ArticleSource;
+import dev.abarmin.bots.entity.Article;
+import dev.abarmin.bots.entity.ArticleSource;
 
 import java.util.Collection;
 

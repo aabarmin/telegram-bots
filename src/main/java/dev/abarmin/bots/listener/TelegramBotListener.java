@@ -4,7 +4,7 @@ import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
 import com.pengrad.telegrambot.request.DeleteWebhook;
 import dev.abarmin.bots.service.TelegramUpdateService;
-import dev.abarmin.bots.rss.digest.DigestBotUpdate;
+import dev.abarmin.bots.model.DigestBotUpdate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;

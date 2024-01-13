@@ -1,15 +1,15 @@
-package dev.abarmin.bots.rss.digest.operation;
+package dev.abarmin.bots.service.digest;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.model.request.ParseMode;
 import com.pengrad.telegrambot.request.SendMessage;
-import dev.abarmin.bots.core.BotHelper;
-import dev.abarmin.bots.core.MessageSourceHelper;
-import dev.abarmin.bots.rss.reader.digest.Digest;
+import dev.abarmin.bots.service.support.BotHelper;
+import dev.abarmin.bots.service.support.MessageSourceHelper;
+import dev.abarmin.bots.model.digest.Digest;
 import dev.abarmin.bots.service.DigestBuildingService;
-import dev.abarmin.bots.rss.reader.digest.DigestItem;
-import dev.abarmin.bots.rss.reader.digest.DigestSource;
+import dev.abarmin.bots.model.digest.DigestItem;
+import dev.abarmin.bots.model.digest.DigestSource;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

@@ -1,6 +1,6 @@
 package dev.abarmin.bots.service;
 
-import dev.abarmin.bots.rss.reader.persistence.Article;
+import dev.abarmin.bots.entity.Article;
 
 public interface ArticleService {
     /**
