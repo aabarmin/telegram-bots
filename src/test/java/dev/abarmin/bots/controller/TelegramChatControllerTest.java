@@ -1,7 +1,6 @@
 package dev.abarmin.bots.controller;
 
-import dev.abarmin.bots.controller.TelegramChatController;
-import dev.abarmin.bots.listener.persistence.TelegramBotChatRepository;
+import dev.abarmin.bots.rss.persistence.TelegramBotChatRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;

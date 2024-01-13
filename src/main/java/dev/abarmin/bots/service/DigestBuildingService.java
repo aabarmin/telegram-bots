@@ -1,12 +1,11 @@
 package dev.abarmin.bots.service;
 
-import dev.abarmin.bots.listener.persistence.TelegramBotChat;
+import dev.abarmin.bots.rss.persistence.TelegramBotChat;
 import dev.abarmin.bots.rss.reader.digest.Digest;
 import dev.abarmin.bots.rss.reader.digest.DigestItem;
 import dev.abarmin.bots.rss.reader.digest.DigestSource;
 import dev.abarmin.bots.rss.reader.persistence.ArticleRepository;
 import dev.abarmin.bots.rss.reader.persistence.ArticleSource;
-import dev.abarmin.bots.service.SubscriptionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Limit;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;

@@ -7,7 +7,7 @@ import com.pengrad.telegrambot.request.SendMessage;
 import dev.abarmin.bots.core.BotHelper;
 import dev.abarmin.bots.core.BotOperation;
 import dev.abarmin.bots.core.MessageSourceHelper;
-import dev.abarmin.bots.listener.persistence.TelegramBotChat;
+import dev.abarmin.bots.rss.persistence.TelegramBotChat;
 import dev.abarmin.bots.service.TelegramChatService;
 import dev.abarmin.bots.rss.digest.DigestBotUpdate;
 import dev.abarmin.bots.service.SubscriptionService;

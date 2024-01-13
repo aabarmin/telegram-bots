@@ -1,4 +1,4 @@
-package dev.abarmin.bots.listener.persistence;
+package dev.abarmin.bots.rss.persistence;
 
 import org.springframework.data.repository.ListCrudRepository;
 import org.springframework.data.repository.ListPagingAndSortingRepository;

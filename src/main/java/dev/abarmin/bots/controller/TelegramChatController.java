@@ -1,6 +1,6 @@
 package dev.abarmin.bots.controller;
 
-import dev.abarmin.bots.listener.persistence.TelegramBotChatRepository;
+import dev.abarmin.bots.rss.persistence.TelegramBotChatRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

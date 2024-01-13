@@ -1,6 +1,6 @@
 package dev.abarmin.bots.rss.digest.persistence;
 
-import dev.abarmin.bots.listener.persistence.TelegramBotChat;
+import dev.abarmin.bots.rss.persistence.TelegramBotChat;
 import dev.abarmin.bots.rss.reader.persistence.ArticleSource;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
