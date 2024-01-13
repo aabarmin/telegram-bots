@@ -1,6 +1,7 @@
 package dev.abarmin.bots.listener;
 
 import dev.abarmin.bots.BotsApplication;
+import dev.abarmin.bots.controller.TelegramBotController;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;

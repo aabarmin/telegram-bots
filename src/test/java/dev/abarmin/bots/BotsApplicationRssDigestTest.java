@@ -1,9 +1,7 @@
 package dev.abarmin.bots;
 
 import com.pengrad.telegrambot.TelegramBot;
-import dev.abarmin.bots.listener.persistence.TelegramBotChatRepository;
 import dev.abarmin.bots.publisher.MessagePublisher;
-import dev.abarmin.bots.publisher.TestMessage;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
