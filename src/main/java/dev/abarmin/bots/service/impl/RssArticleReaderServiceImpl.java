@@ -2,8 +2,8 @@ package dev.abarmin.bots.service.impl;
 
 import com.apptasticsoftware.rssreader.Item;
 import com.apptasticsoftware.rssreader.RssReader;
-import dev.abarmin.bots.entity.Article;
-import dev.abarmin.bots.entity.ArticleSource;
+import dev.abarmin.bots.entity.rss.Article;
+import dev.abarmin.bots.entity.rss.ArticleSource;
 import dev.abarmin.bots.repository.ArticleSourceRepository;
 import dev.abarmin.bots.service.ArticleReaderService;
 import dev.abarmin.bots.service.ArticleService;

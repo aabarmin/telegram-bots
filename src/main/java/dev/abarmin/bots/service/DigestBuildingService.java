@@ -1,11 +1,11 @@
 package dev.abarmin.bots.service;
 
-import dev.abarmin.bots.entity.TelegramBotChat;
+import dev.abarmin.bots.entity.telegram.TelegramBotChat;
 import dev.abarmin.bots.model.digest.Digest;
 import dev.abarmin.bots.model.digest.DigestItem;
 import dev.abarmin.bots.model.digest.DigestSource;
 import dev.abarmin.bots.repository.ArticleRepository;
-import dev.abarmin.bots.entity.ArticleSource;
+import dev.abarmin.bots.entity.rss.ArticleSource;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Limit;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;

@@ -1,6 +1,6 @@
 package dev.abarmin.bots.repository;
 
-import dev.abarmin.bots.entity.ArticleSource;
+import dev.abarmin.bots.entity.rss.ArticleSource;
 import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.data.repository.ListCrudRepository;
 

@@ -1,6 +1,6 @@
 package dev.abarmin.bots.service;
 
-import dev.abarmin.bots.entity.Article;
+import dev.abarmin.bots.entity.rss.Article;
 
 public interface ArticleService {
     /**

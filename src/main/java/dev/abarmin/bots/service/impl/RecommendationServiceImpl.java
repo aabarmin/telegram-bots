@@ -1,6 +1,6 @@
 package dev.abarmin.bots.service.impl;
 
-import dev.abarmin.bots.entity.ArticleSource;
+import dev.abarmin.bots.entity.rss.ArticleSource;
 import dev.abarmin.bots.repository.ArticleSourceRepository;
 import dev.abarmin.bots.service.RecommendationService;
 import lombok.RequiredArgsConstructor;

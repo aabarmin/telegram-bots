@@ -1,6 +1,6 @@
 package dev.abarmin.bots.service;
 
-import dev.abarmin.bots.entity.TelegramBotChat;
+import dev.abarmin.bots.entity.telegram.TelegramBotChat;
 
 public interface TelegramChatService {
     /**

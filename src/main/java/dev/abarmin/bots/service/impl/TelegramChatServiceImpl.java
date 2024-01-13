@@ -1,6 +1,6 @@
 package dev.abarmin.bots.service.impl;
 
-import dev.abarmin.bots.entity.TelegramBotChat;
+import dev.abarmin.bots.entity.telegram.TelegramBotChat;
 import dev.abarmin.bots.repository.TelegramBotChatRepository;
 import dev.abarmin.bots.service.TelegramChatService;
 import lombok.RequiredArgsConstructor;

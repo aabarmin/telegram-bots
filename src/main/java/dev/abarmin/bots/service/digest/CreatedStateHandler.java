@@ -12,7 +12,7 @@ import dev.abarmin.bots.service.TelegramChatService;
 import dev.abarmin.bots.model.DigestBotUpdate;
 import dev.abarmin.bots.service.RecommendationService;
 import dev.abarmin.bots.service.SubscriptionService;
-import dev.abarmin.bots.entity.ArticleSource;
+import dev.abarmin.bots.entity.rss.ArticleSource;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.ApplicationEventPublisher;

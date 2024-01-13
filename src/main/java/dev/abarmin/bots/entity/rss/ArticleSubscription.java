@@ -1,5 +1,6 @@
-package dev.abarmin.bots.entity;
+package dev.abarmin.bots.entity.rss;
 
+import dev.abarmin.bots.entity.telegram.TelegramBotChat;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.data.relational.core.mapping.Column;

@@ -3,7 +3,7 @@ package dev.abarmin.bots.service.support;
 import com.pengrad.telegrambot.model.Chat;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
-import dev.abarmin.bots.entity.TelegramBotChat;
+import dev.abarmin.bots.entity.telegram.TelegramBotChat;
 import dev.abarmin.bots.service.TelegramChatService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
