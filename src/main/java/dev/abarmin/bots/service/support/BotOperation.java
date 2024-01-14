@@ -1,6 +1,7 @@
 package dev.abarmin.bots.service.support;
 
-import dev.abarmin.bots.service.support.response.BotResponse;
+import dev.abarmin.bots.model.request.BotRequest;
+import dev.abarmin.bots.model.response.BotResponse;
 
 public interface BotOperation {
     BotResponse process(BotRequest request);

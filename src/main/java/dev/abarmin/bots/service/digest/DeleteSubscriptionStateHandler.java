@@ -4,13 +4,14 @@ import com.pengrad.telegrambot.model.request.ReplyKeyboardRemove;
 import com.pengrad.telegrambot.request.SendMessage;
 import dev.abarmin.bots.entity.rss.ArticleSource;
 import dev.abarmin.bots.entity.telegram.TelegramBotChat;
+import dev.abarmin.bots.model.request.BotRequest;
 import dev.abarmin.bots.model.DigestBotUpdate;
 import dev.abarmin.bots.service.SubscriptionService;
 import dev.abarmin.bots.service.TelegramChatService;
 import dev.abarmin.bots.service.support.*;
-import dev.abarmin.bots.service.support.response.BotResponse;
-import dev.abarmin.bots.service.support.response.NoopResponse;
-import dev.abarmin.bots.service.support.response.SendMessageResponse;
+import dev.abarmin.bots.model.response.BotResponse;
+import dev.abarmin.bots.model.response.NoopResponse;
+import dev.abarmin.bots.model.response.SendMessageResponse;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.ApplicationEventPublisher;
@@ -44,8 +45,8 @@ public class DeleteSubscriptionStateHandler implements BotOperation {
 
     private BotResponse processInvalidMessage(BotRequest request) {
         var message = new SendMessage(
-                request.chat().chatId(),
-                messageSource.getMessage("bot.digest.button.subscriptions-delete-invalid-number", request.update())
+                request.chatId(),
+                messageSource.getMessage("bot.digest.button.subscriptions-delete-invalid-number", request)
         );
 
         return new SendMessageResponse(message);
@@ -59,13 +60,13 @@ public class DeleteSubscriptionStateHandler implements BotOperation {
         chatService.updateStatus(request.chat(), "SUBSCRIPTIONS");
 
         return BotResponse.message(new SendMessage(
-                request.chat().chatId(),
-                messageSource.getMessage("bot.digest.button.subscriptions-delete-success", request.update())
+                request.chatId(),
+                messageSource.getMessage("bot.digest.button.subscriptions-delete-success", request)
         )).then(BotResponse.callback(bot -> {
             eventPublisher.publishEvent(new DigestBotUpdate(
                     helper.withMessage(
-                            request.update(),
-                            messageSource.getMessage("bot.digest.button.subscriptions", request.update())
+                            request,
+                            messageSource.getMessage("bot.digest.button.subscriptions", request)
                     )
             ));
         }));
@@ -78,7 +79,7 @@ public class DeleteSubscriptionStateHandler implements BotOperation {
 
     private BotResponse processBack(BotRequest request) {
         chatService.updateStatus(request.chat(), "SUBSCRIPTIONS");
-        eventPublisher.publishEvent(new DigestBotUpdate(request.update()));
+        eventPublisher.publishEvent(new DigestBotUpdate(request));
 
         return new NoopResponse();
     }
@@ -91,8 +92,8 @@ public class DeleteSubscriptionStateHandler implements BotOperation {
                 .collect(Collectors.joining("\n"));
 
         var message = new SendMessage(
-                request.chat().chatId(),
-                messageSource.getMessage("bot.digest.button.subscriptions-delete-request", request.update())
+                request.chatId(),
+                messageSource.getMessage("bot.digest.button.subscriptions-delete-request", request)
                         + "\n\n"
                         + subscriptions
         ).replyMarkup(new ReplyKeyboardRemove());
@@ -103,14 +104,14 @@ public class DeleteSubscriptionStateHandler implements BotOperation {
     private boolean isDeleteSubscription(BotRequest request) {
         return StringUtils.equalsIgnoreCase(
                 request.message(),
-                messageSource.getMessage("bot.digest.button.subscriptions-delete", request.update())
+                messageSource.getMessage("bot.digest.button.subscriptions-delete", request)
         );
     }
 
     private boolean isBack(BotRequest request) {
         return StringUtils.equalsIgnoreCase(
                 request.message(),
-                messageSource.getMessage("bot.digest.button.back", request.update())
+                messageSource.getMessage("bot.digest.button.back", request)
         );
     }
 
@@ -125,6 +126,6 @@ public class DeleteSubscriptionStateHandler implements BotOperation {
 
     @Override
     public boolean supports(BotRequest request) {;
-        return StringUtils.equalsIgnoreCase(request.chat().chatStatus(), "SUBSCRIPTIONS_DELETE");
+        return StringUtils.equalsIgnoreCase(request.chatStatus(), "SUBSCRIPTIONS_DELETE");
     }
 }

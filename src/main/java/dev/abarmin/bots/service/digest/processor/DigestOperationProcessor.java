@@ -3,10 +3,10 @@ package dev.abarmin.bots.service.digest.processor;
 import com.pengrad.telegrambot.model.request.ParseMode;
 import com.pengrad.telegrambot.request.SendMessage;
 import dev.abarmin.bots.service.impl.DigestServiceImpl;
-import dev.abarmin.bots.service.support.BotRequest;
-import dev.abarmin.bots.service.support.response.BotResponse;
+import dev.abarmin.bots.model.request.BotRequest;
+import dev.abarmin.bots.model.response.BotResponse;
 import dev.abarmin.bots.service.support.MessageSourceHelper;
-import dev.abarmin.bots.service.support.response.SendMessageResponse;
+import dev.abarmin.bots.model.response.SendMessageResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -22,12 +22,12 @@ public class DigestOperationProcessor {
     public BotResponse process(BotRequest request) {
         var digest = converter.toMarkdown(
                 digestBuilder.create(request.chat()),
-                messageSource.getMessage("bot.digest.header.last-5", request.update(), LocalDate.now()),
-                messageSource.getMessage("bot.digest.no-updates", request.update())
+                messageSource.getMessage("bot.digest.header.last-5", request, LocalDate.now()),
+                messageSource.getMessage("bot.digest.no-updates", request)
         );
 
         var message = new SendMessage(
-                request.chat().chatId(),
+                request.chatId(),
                 digest
         ).parseMode(ParseMode.Markdown);
 

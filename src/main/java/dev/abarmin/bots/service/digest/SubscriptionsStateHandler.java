@@ -6,10 +6,12 @@ import com.pengrad.telegrambot.request.SendMessage;
 import dev.abarmin.bots.model.DigestBotUpdate;
 import dev.abarmin.bots.service.SubscriptionService;
 import dev.abarmin.bots.service.TelegramChatService;
-import dev.abarmin.bots.service.support.*;
-import dev.abarmin.bots.service.support.response.BotResponse;
-import dev.abarmin.bots.service.support.response.NoopResponse;
-import dev.abarmin.bots.service.support.response.SendMessageResponse;
+import dev.abarmin.bots.service.support.BotOperation;
+import dev.abarmin.bots.model.request.BotRequest;
+import dev.abarmin.bots.service.support.MessageSourceHelper;
+import dev.abarmin.bots.model.response.BotResponse;
+import dev.abarmin.bots.model.response.NoopResponse;
+import dev.abarmin.bots.model.response.SendMessageResponse;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.ApplicationEventPublisher;
@@ -42,7 +44,7 @@ public class SubscriptionsStateHandler implements BotOperation {
     private BotResponse processDeleteSubscription(BotRequest request) {
         chatService.updateStatus(request.chat(), "SUBSCRIPTIONS_DELETE");
         return BotResponse.noop().then(BotResponse.callback(bot -> {
-            eventPublisher.publishEvent(new DigestBotUpdate(request.update()));
+            eventPublisher.publishEvent(new DigestBotUpdate(request));
         }));
     }
 
@@ -55,7 +57,7 @@ public class SubscriptionsStateHandler implements BotOperation {
 
     private BotResponse processAddSubscription(BotRequest request) {
         chatService.updateStatus(request.chat(), "SUBSCRIPTIONS_ADD");
-        eventPublisher.publishEvent(new DigestBotUpdate(request.update()));
+        eventPublisher.publishEvent(new DigestBotUpdate(request));
         return new NoopResponse();
     }
 
@@ -66,7 +68,7 @@ public class SubscriptionsStateHandler implements BotOperation {
                 messageSource.getMessage("bot.digest.button.subscriptions-back-success", request)
         );
         return BotResponse.message(message).then(BotResponse.callback(bot -> {
-            eventPublisher.publishEvent(new DigestBotUpdate(request.update()));
+            eventPublisher.publishEvent(new DigestBotUpdate(request));
         }));
     }
 

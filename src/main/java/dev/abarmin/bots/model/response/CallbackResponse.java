@@ -1,4 +1,4 @@
-package dev.abarmin.bots.service.support.response;
+package dev.abarmin.bots.model.response;
 
 import com.pengrad.telegrambot.TelegramBot;
 import lombok.RequiredArgsConstructor;

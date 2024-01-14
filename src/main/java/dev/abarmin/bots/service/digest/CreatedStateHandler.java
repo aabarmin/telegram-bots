@@ -4,6 +4,7 @@ import com.pengrad.telegrambot.model.request.KeyboardButton;
 import com.pengrad.telegrambot.model.request.ReplyKeyboardMarkup;
 import com.pengrad.telegrambot.request.SendMessage;
 import dev.abarmin.bots.entity.rss.ArticleSource;
+import dev.abarmin.bots.model.request.BotRequest;
 import dev.abarmin.bots.model.DigestBotUpdate;
 import dev.abarmin.bots.service.RecommendationService;
 import dev.abarmin.bots.service.SubscriptionService;
@@ -11,9 +12,9 @@ import dev.abarmin.bots.service.TelegramChatService;
 import dev.abarmin.bots.service.digest.processor.DigestOperationProcessor;
 import dev.abarmin.bots.service.digest.processor.WhatsNewOperationProcessor;
 import dev.abarmin.bots.service.support.*;
-import dev.abarmin.bots.service.support.response.BotResponse;
-import dev.abarmin.bots.service.support.response.NoopResponse;
-import dev.abarmin.bots.service.support.response.SendMessageResponse;
+import dev.abarmin.bots.model.response.BotResponse;
+import dev.abarmin.bots.model.response.NoopResponse;
+import dev.abarmin.bots.model.response.SendMessageResponse;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.ApplicationEventPublisher;
@@ -58,25 +59,25 @@ public class CreatedStateHandler implements BotOperation {
                 .forEach(uri -> subscriptionService.subscribe(request.chat(), uri));
 
         eventPublisher.publishEvent(new DigestBotUpdate(
-                helper.withMessage(request.update(), "/start")
+                helper.withMessage(request, "/start")
         ));
 
         return new SendMessageResponse(new SendMessage(
-                request.chat().chatId(),
-                messageSource.getMessage("bot.digest.button.subscriptions-add-recommended-success", request.update())
+                request.chatId(),
+                messageSource.getMessage("bot.digest.button.subscriptions-add-recommended-success", request)
         ));
     }
 
     private boolean isSubscribeToRecommended(BotRequest request) {
         return StringUtils.equalsIgnoreCase(
                 request.message(),
-                messageSource.getMessage("bot.digest.button.subscriptions-add-recommended", request.update())
+                messageSource.getMessage("bot.digest.button.subscriptions-add-recommended", request)
         );
     }
 
     private BotResponse processSubscriptions(BotRequest request) {
         chatService.updateStatus(request.chat(), "SUBSCRIPTIONS");
-        eventPublisher.publishEvent(new DigestBotUpdate(request.update()));
+        eventPublisher.publishEvent(new DigestBotUpdate(request));
         return new NoopResponse();
     }
 
@@ -87,35 +88,35 @@ public class CreatedStateHandler implements BotOperation {
     private boolean isDigest(BotRequest request) {
         return StringUtils.equalsIgnoreCase(
                 request.message(),
-                messageSource.getMessage("bot.digest.button.digest", request.update())
+                messageSource.getMessage("bot.digest.button.digest", request)
         );
     }
 
     private boolean isBack(BotRequest request) {
         return StringUtils.equalsIgnoreCase(
                 request.message(),
-                messageSource.getMessage("bot.digest.button.back", request.update())
+                messageSource.getMessage("bot.digest.button.back", request)
         );
     }
 
     private boolean isSubscriptions(BotRequest request) {
         return StringUtils.equalsIgnoreCase(
                 request.message(),
-                messageSource.getMessage("bot.digest.button.subscriptions", request.update())
+                messageSource.getMessage("bot.digest.button.subscriptions", request)
         );
     }
 
     private boolean isWhatsNewToday(BotRequest request) {
         return StringUtils.equalsIgnoreCase(
                 request.message(),
-                messageSource.getMessage("bot.digest.button.whats-new-today", request.update())
+                messageSource.getMessage("bot.digest.button.whats-new-today", request)
         );
     }
 
     private BotResponse processUnknown(BotRequest request) {
         var message = new SendMessage(
-                request.chat().chatId(),
-                messageSource.getMessage("bot.digest.not-supported", request.update())
+                request.chatId(),
+                messageSource.getMessage("bot.digest.not-supported", request)
         );
         return new SendMessageResponse(message);
     }
@@ -135,20 +136,20 @@ public class CreatedStateHandler implements BotOperation {
                 .sorted(Comparator.naturalOrder())
                 .collect(Collectors.joining("\n"));
 
-        var message = messageSource.getMessage("bot.digest.start-and-subscribe", request.update()) + "\n\n" + sources;
+        var message = messageSource.getMessage("bot.digest.start-and-subscribe", request) + "\n\n" + sources;
         var telegramMessage = new SendMessage(
-                request.chat().chatId(),
+                request.chatId(),
                 message
         )
                 .replyMarkup(new ReplyKeyboardMarkup(
                         new KeyboardButton[]{
                                 new KeyboardButton(
-                                        messageSource.getMessage("bot.digest.button.subscriptions-add-recommended", request.update())
+                                        messageSource.getMessage("bot.digest.button.subscriptions-add-recommended", request)
                                 )
                         },
                         new KeyboardButton[]{
                                 new KeyboardButton(
-                                        messageSource.getMessage("bot.digest.button.subscriptions", request.update())
+                                        messageSource.getMessage("bot.digest.button.subscriptions", request)
                                 )
                         }
                 ));
@@ -158,21 +159,21 @@ public class CreatedStateHandler implements BotOperation {
 
     private BotResponse processStartWithSubscriptions(BotRequest request) {
         var message = new SendMessage(
-                request.chat().chatId(),
-                messageSource.getMessage("bot.digest.start", request.update())
+                request.chatId(),
+                messageSource.getMessage("bot.digest.start", request)
         )
                 .replyMarkup(new ReplyKeyboardMarkup(
                         new KeyboardButton[] {
                                 new KeyboardButton(
-                                        messageSource.getMessage("bot.digest.button.digest", request.update())
+                                        messageSource.getMessage("bot.digest.button.digest", request)
                                 ),
                                 new KeyboardButton(
-                                        messageSource.getMessage("bot.digest.button.whats-new-today", request.update())
+                                        messageSource.getMessage("bot.digest.button.whats-new-today", request)
                                 )
                         },
                         new KeyboardButton[] {
                                 new KeyboardButton(
-                                        messageSource.getMessage("bot.digest.button.subscriptions", request.update())
+                                        messageSource.getMessage("bot.digest.button.subscriptions", request)
                                 )
                         }
                 ));
@@ -185,6 +186,6 @@ public class CreatedStateHandler implements BotOperation {
 
     @Override
     public boolean supports(BotRequest request) {
-        return StringUtils.equalsIgnoreCase(request.chat().chatStatus(), "CREATED");
+        return StringUtils.equalsIgnoreCase(request.chatStatus(), "CREATED");
     }
 }

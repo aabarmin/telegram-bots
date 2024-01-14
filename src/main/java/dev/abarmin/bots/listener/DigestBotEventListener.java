@@ -2,10 +2,11 @@ package dev.abarmin.bots.listener;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.request.SendMessage;
+import dev.abarmin.bots.model.request.BotRequest;
 import dev.abarmin.bots.model.DigestBotUpdate;
 import dev.abarmin.bots.service.support.*;
-import dev.abarmin.bots.service.support.response.BotResponse;
-import dev.abarmin.bots.service.support.response.SendMessageResponse;
+import dev.abarmin.bots.model.response.BotResponse;
+import dev.abarmin.bots.model.response.SendMessageResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.event.EventListener;
@@ -40,10 +41,10 @@ public class DigestBotEventListener {
 
     private BotResponse notSupported(BotRequest request) {
         return new SendMessageResponse(new SendMessage(
-                request.chat().chatId(),
+                request.chatId(),
                 messageSource.getMessage(
                         "bot.digest.not-supported",
-                        request.update()
+                        request
                 )
         ));
     }

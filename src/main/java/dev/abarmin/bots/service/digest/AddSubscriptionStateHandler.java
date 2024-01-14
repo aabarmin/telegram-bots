@@ -5,14 +5,13 @@ import com.pengrad.telegrambot.model.request.KeyboardButton;
 import com.pengrad.telegrambot.model.request.ReplyKeyboardMarkup;
 import com.pengrad.telegrambot.model.request.ReplyKeyboardRemove;
 import com.pengrad.telegrambot.request.SendMessage;
+import dev.abarmin.bots.model.request.BotRequest;
 import dev.abarmin.bots.model.DigestBotUpdate;
 import dev.abarmin.bots.service.SubscriptionService;
 import dev.abarmin.bots.service.TelegramChatService;
 import dev.abarmin.bots.service.support.*;
-import dev.abarmin.bots.service.support.response.BotResponse;
-import dev.abarmin.bots.service.support.response.CallbackResponse;
-import dev.abarmin.bots.service.support.response.NoopResponse;
-import dev.abarmin.bots.service.support.response.SendMessageResponse;
+import dev.abarmin.bots.model.response.BotResponse;
+import dev.abarmin.bots.model.response.SendMessageResponse;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.ApplicationEventPublisher;
@@ -44,8 +43,8 @@ public class AddSubscriptionStateHandler implements BotOperation {
 
     private BotResponse processAddSubscription(BotRequest request) {
         var message = new SendMessage(
-                request.chat().chatId(),
-                messageSource.getMessage("bot.digest.button.subscriptions-add-request", request.update())
+                request.chatId(),
+                messageSource.getMessage("bot.digest.button.subscriptions-add-request", request)
         )
                 .replyMarkup(new ReplyKeyboardRemove());
 
@@ -55,14 +54,14 @@ public class AddSubscriptionStateHandler implements BotOperation {
     private boolean isAddSubscription(BotRequest request) {
         return StringUtils.equalsIgnoreCase(
                 request.message(),
-                messageSource.getMessage("bot.digest.button.subscriptions-add", request.update())
+                messageSource.getMessage("bot.digest.button.subscriptions-add", request)
         );
     }
 
     private BotResponse processInvalidRss(BotRequest request) {
         var message = new SendMessage(
-                request.chat().chatId(),
-                messageSource.getMessage("bot.digest.button.subscriptions-add-invalid-url", request.update())
+                request.chatId(),
+                messageSource.getMessage("bot.digest.button.subscriptions-add-invalid-url", request)
         );
 
         return new SendMessageResponse(message);
@@ -73,16 +72,16 @@ public class AddSubscriptionStateHandler implements BotOperation {
         chatService.updateStatus(request.chat(), "SUBSCRIPTIONS");
 
         var sendMessage = new SendMessage(
-                request.chat().chatId(),
-                messageSource.getMessage("bot.digest.button.subscriptions-added", request.update())
+                request.chatId(),
+                messageSource.getMessage("bot.digest.button.subscriptions-added", request)
         )
                 .replyMarkup(new ReplyKeyboardMarkup(
                         new KeyboardButton[]{
-                                new KeyboardButton(messageSource.getMessage("bot.digest.button.back", request.update())),
+                                new KeyboardButton(messageSource.getMessage("bot.digest.button.back", request)),
                         },
                         new KeyboardButton[]{
-                                new KeyboardButton(messageSource.getMessage("bot.digest.button.subscriptions-add", request.update())),
-                                new KeyboardButton(messageSource.getMessage("bot.digest.button.subscriptions-delete", request.update()))
+                                new KeyboardButton(messageSource.getMessage("bot.digest.button.subscriptions-add", request)),
+                                new KeyboardButton(messageSource.getMessage("bot.digest.button.subscriptions-delete", request))
                         }
                 ));
 
@@ -93,14 +92,14 @@ public class AddSubscriptionStateHandler implements BotOperation {
         chatService.updateStatus(request.chat(), "SUBSCRIPTIONS");
 
         return BotResponse.noop().then(BotResponse.callback(bot ->
-                eventPublisher.publishEvent(new DigestBotUpdate(request.update()))
+                eventPublisher.publishEvent(new DigestBotUpdate(request))
         ));
     }
 
     private boolean isBack(BotRequest request) {
         return StringUtils.equalsIgnoreCase(
                 request.message(),
-                messageSource.getMessage("bot.digest.button.back", request.update())
+                messageSource.getMessage("bot.digest.button.back", request)
         );
     }
 
@@ -116,6 +115,6 @@ public class AddSubscriptionStateHandler implements BotOperation {
 
     @Override
     public boolean supports(BotRequest request) {
-        return StringUtils.equalsIgnoreCase(request.chat().chatStatus(), "SUBSCRIPTIONS_ADD");
+        return StringUtils.equalsIgnoreCase(request.chatStatus(), "SUBSCRIPTIONS_ADD");
     }
 }

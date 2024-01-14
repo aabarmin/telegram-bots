@@ -4,6 +4,7 @@ import com.pengrad.telegrambot.model.Chat;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
 import dev.abarmin.bots.entity.telegram.TelegramBotChat;
+import dev.abarmin.bots.model.request.BotRequest;
 import dev.abarmin.bots.service.TelegramChatService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
@@ -25,11 +26,11 @@ public class BotHelper {
         );
     }
 
-    public TelegramBotChat getChat(Update update) {
+    private TelegramBotChat getChat(Update update) {
         return chatService.findChat(getChatId(update));
     }
 
-    public long getChatId(Update update) {
+    private long getChatId(Update update) {
         return Optional.of(update)
                 .map(Update::message)
                 .map(Message::chat)
@@ -37,14 +38,18 @@ public class BotHelper {
                 .orElseThrow();
     }
 
-    public String getMessage(Update update) {
+    private String getMessage(Update update) {
         return Optional.of(update)
                 .map(Update::message)
                 .map(Message::text)
                 .orElse(StringUtils.EMPTY);
     }
 
-    public Update withMessage(Update update, String message) {
+    public Update withMessage(BotRequest request, String message) {
+        return withMessage(request.update(), message);
+    }
+
+    private Update withMessage(Update update, String message) {
         var telegramMessage = update.message();
         ReflectionUtils.doWithFields(Message.class, field -> {
             field.setAccessible(true);
