@@ -1,11 +1,11 @@
 package dev.abarmin.bots.service.support;
 
-import com.pengrad.telegrambot.model.Update;
+import dev.abarmin.bots.service.support.response.BotResponse;
 
 public interface BotOperation {
-    void process(Update update);
+    BotResponse process(BotRequest request);
 
-    default boolean supports(Update update) {
+    default boolean supports(BotRequest request) {
         return false;
     }
 }

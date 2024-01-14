@@ -1,12 +1,11 @@
 package dev.abarmin.bots.listener;
 
 import com.pengrad.telegrambot.TelegramBot;
-import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
-import dev.abarmin.bots.service.support.BotHelper;
-import dev.abarmin.bots.service.support.BotOperation;
-import dev.abarmin.bots.service.support.MessageSourceHelper;
 import dev.abarmin.bots.model.DigestBotUpdate;
+import dev.abarmin.bots.service.support.*;
+import dev.abarmin.bots.service.support.response.BotResponse;
+import dev.abarmin.bots.service.support.response.SendMessageResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.event.EventListener;
@@ -30,20 +29,21 @@ public class DigestBotEventListener {
 
     @EventListener(DigestBotUpdate.class)
     public void onEvent(DigestBotUpdate update) {
-        var telegramUpdate = update.update();
-        var operation = operations.stream()
-                .filter(op -> op.supports(telegramUpdate))
+        var botRequest = helper.toRequest(update.update());
+        var botResponse = operations.stream()
+                .filter(op -> op.supports(botRequest))
                 .findFirst()
-                .orElseGet(() -> this::notSupported);
-        operation.process(telegramUpdate);
+                .orElseGet(() -> this::notSupported)
+                .process(botRequest);
+        botResponse.send(digestBot);
     }
 
-    private void notSupported(Update update) {
-        digestBot.execute(new SendMessage(
-                helper.getChatId(update),
+    private BotResponse notSupported(BotRequest request) {
+        return new SendMessageResponse(new SendMessage(
+                request.chat().chatId(),
                 messageSource.getMessage(
                         "bot.digest.not-supported",
-                        update
+                        request.update()
                 )
         ));
     }

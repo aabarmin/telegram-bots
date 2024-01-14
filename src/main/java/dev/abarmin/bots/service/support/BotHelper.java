@@ -17,6 +17,14 @@ import java.util.Optional;
 public class BotHelper {
     private final TelegramChatService chatService;
 
+    public BotRequest toRequest(Update update) {
+        return new BotRequest(
+                update,
+                getChat(update),
+                getMessage(update)
+        );
+    }
+
     public TelegramBotChat getChat(Update update) {
         return chatService.findChat(getChatId(update));
     }

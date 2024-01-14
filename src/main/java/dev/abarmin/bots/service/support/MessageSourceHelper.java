@@ -15,6 +15,10 @@ import java.util.Optional;
 public class MessageSourceHelper {
     private final MessageSource messageSource;
 
+    public String getMessage(String template, BotRequest request, Object... params) {
+        return getMessage(template, request.update(), params);
+    }
+
     public String getMessage(String template, Update update, Object... params) {
         return messageSource.getMessage(
                 template,
