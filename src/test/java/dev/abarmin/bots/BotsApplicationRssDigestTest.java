@@ -15,6 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest(properties = {
         "telegram.bot.listener.webhook.enabled=false",
         "telegram.bot.listener.polling.enabled=false",
+		"telegram.bot.rss.digest.scheduler.enabled=false",
 		"telegram.bot.rss.reader.enabled=false"
 })
 @MockBeans({

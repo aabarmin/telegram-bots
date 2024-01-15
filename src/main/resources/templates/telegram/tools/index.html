@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en"
+      layout:decorate="~{layout.html}"
+      xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="">
+<head>
+    <meta charset="UTF-8">
+    <title>Telegram Tools</title>
+</head>
+<body>
+<th:block layout:fragment="main-content">
+
+    <div class="row">
+        <h2>Tools</h2>
+    </div>
+
+    <div class="row">
+        <a th:href="@{/telegram/tools/digest}" class="btn btn-primary">
+            Send all updates now
+        </a>
+    </div>
+
+</th:block>
+</body>
+</html>

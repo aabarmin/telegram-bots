@@ -6,6 +6,8 @@ import dev.abarmin.bots.service.TelegramChatService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
+
 @Service
 @RequiredArgsConstructor
 public class TelegramChatServiceImpl implements TelegramChatService {
@@ -24,5 +26,10 @@ public class TelegramChatServiceImpl implements TelegramChatService {
     public TelegramBotChat updateStatus(TelegramBotChat chat, String status) {
         var updatedChat = chat.withStatus(status);
         return repository.save(updatedChat);
+    }
+
+    @Override
+    public Collection<TelegramBotChat> findAll() {
+        return repository.findAll();
     }
 }
