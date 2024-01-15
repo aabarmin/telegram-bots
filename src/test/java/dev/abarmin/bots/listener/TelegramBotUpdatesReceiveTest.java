@@ -13,6 +13,7 @@ class TelegramBotUpdatesReceiveTest {
             .withConfiguration(AutoConfigurations.of(BotsApplication.class))
             .withPropertyValues(
                     "spring.liquibase.enabled=false",
+                    "telegram.bot.rss.digest.scheduler.enabled=false",
                     "telegram.bot.rss.reader.scheduler.initialDelay=PT5S",
                     "telegram.bot.rss.reader.scheduler.fixedDelay=PT1H"
             );

@@ -19,6 +19,9 @@ telegram:
         botName: DigestBot
         botToken: ${DIGEST_BOT_TOKEN}
         webHook: ${DIGEST_BOT_WEBHOOK}
+        scheduler:
+          cronExpression: 0 0 9 * * *
+          enabled: true
       reader:
         enabled: true
         scheduler:
