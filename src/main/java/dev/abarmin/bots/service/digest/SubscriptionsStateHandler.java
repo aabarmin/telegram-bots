@@ -1,16 +1,17 @@
 package dev.abarmin.bots.service.digest;
 
-import com.pengrad.telegrambot.TelegramBot;
-import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.model.request.KeyboardButton;
 import com.pengrad.telegrambot.model.request.ReplyKeyboardMarkup;
 import com.pengrad.telegrambot.request.SendMessage;
-import dev.abarmin.bots.service.support.BotHelper;
-import dev.abarmin.bots.service.support.BotOperation;
-import dev.abarmin.bots.service.support.MessageSourceHelper;
-import dev.abarmin.bots.service.TelegramChatService;
 import dev.abarmin.bots.model.DigestBotUpdate;
 import dev.abarmin.bots.service.SubscriptionService;
+import dev.abarmin.bots.service.TelegramChatService;
+import dev.abarmin.bots.service.support.BotOperation;
+import dev.abarmin.bots.model.request.BotRequest;
+import dev.abarmin.bots.service.support.MessageSourceHelper;
+import dev.abarmin.bots.model.response.BotResponse;
+import dev.abarmin.bots.model.response.NoopResponse;
+import dev.abarmin.bots.model.response.SendMessageResponse;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.ApplicationEventPublisher;
@@ -22,99 +23,103 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class SubscriptionsStateHandler implements BotOperation {
     private final ApplicationEventPublisher eventPublisher;
-    private final BotHelper helper;
-    private final TelegramBot telegramBot;
     private final MessageSourceHelper messageSource;
     private final TelegramChatService chatService;
     private final SubscriptionService subscriptionService;
 
     @Override
-    public void process(Update update) {
-        if (isManageSubscriptions(update)) {
-            processManageSubscriptions(update);
-        } else if (isBack(update)) {
-            processBack(update);
-        } else if (isAddSubscription(update)) {
-            processAddSubscription(update);
-        } else if (isDeleteSubscription(update)) {
-            processDeleteSubscription(update);
+    public BotResponse process(BotRequest request) {
+        if (isManageSubscriptions(request)) {
+            return processManageSubscriptions(request);
+        } else if (isBack(request)) {
+            return processBack(request);
+        } else if (isAddSubscription(request)) {
+            return processAddSubscription(request);
+        } else if (isDeleteSubscription(request)) {
+            return processDeleteSubscription(request);
         }
+        return new NoopResponse();
     }
 
-    private void processDeleteSubscription(Update update) {
-        chatService.updateStatus(helper.getChat(update), "SUBSCRIPTIONS_DELETE");
-        eventPublisher.publishEvent(new DigestBotUpdate(update));
+    private BotResponse processDeleteSubscription(BotRequest request) {
+        chatService.updateStatus(request.chat(), "SUBSCRIPTIONS_DELETE");
+        return BotResponse.noop().then(BotResponse.callback(bot -> {
+            eventPublisher.publishEvent(new DigestBotUpdate(request));
+        }));
     }
 
-    private boolean isDeleteSubscription(Update update) {
+    private boolean isDeleteSubscription(BotRequest request) {
         return StringUtils.equalsIgnoreCase(
-                helper.getMessage(update),
-                messageSource.getMessage("bot.digest.button.subscriptions-delete", update)
+                request.message(),
+                messageSource.getMessage("bot.digest.button.subscriptions-delete", request)
         );
     }
 
-    private void processAddSubscription(Update update) {
-        chatService.updateStatus(helper.getChat(update), "SUBSCRIPTIONS_ADD");
-        eventPublisher.publishEvent(new DigestBotUpdate(update));
+    private BotResponse processAddSubscription(BotRequest request) {
+        chatService.updateStatus(request.chat(), "SUBSCRIPTIONS_ADD");
+        eventPublisher.publishEvent(new DigestBotUpdate(request));
+        return new NoopResponse();
     }
 
-    private void processBack(Update update) {
-        chatService.updateStatus(helper.getChat(update), "CREATED");
-        telegramBot.execute(new SendMessage(
-                helper.getChatId(update),
-                messageSource.getMessage("bot.digest.button.subscriptions-back-success", update)
-        ));
-        eventPublisher.publishEvent(new DigestBotUpdate(update));
+    private BotResponse processBack(BotRequest request) {
+        chatService.updateStatus(request.chat(), "CREATED");
+        var message = new SendMessage(
+                request.chatId(),
+                messageSource.getMessage("bot.digest.button.subscriptions-back-success", request)
+        );
+        return BotResponse.message(message).then(BotResponse.callback(bot -> {
+            eventPublisher.publishEvent(new DigestBotUpdate(request));
+        }));
     }
 
-    private boolean isBack(Update update) {
+    private boolean isBack(BotRequest request) {
         return StringUtils.equalsIgnoreCase(
-                helper.getMessage(update),
-                messageSource.getMessage("bot.digest.button.back", update)
+                request.message(),
+                messageSource.getMessage("bot.digest.button.back", request)
         );
     }
 
-    private boolean isManageSubscriptions(Update update) {
+    private boolean isManageSubscriptions(BotRequest request) {
         return StringUtils.equalsIgnoreCase(
-                helper.getMessage(update),
-                messageSource.getMessage("bot.digest.button.subscriptions", update)
+                request.message(),
+                messageSource.getMessage("bot.digest.button.subscriptions", request)
         );
     }
 
-    private boolean isAddSubscription(Update update) {
+    private boolean isAddSubscription(BotRequest request) {
         return StringUtils.equalsIgnoreCase(
-                helper.getMessage(update),
-                messageSource.getMessage("bot.digest.button.subscriptions-add", update)
+                request.message(),
+                messageSource.getMessage("bot.digest.button.subscriptions-add", request)
         );
     }
 
-    private void processManageSubscriptions(Update update) {
-        var sources = subscriptionService.findSubscriptions(helper.getChat(update))
+    private BotResponse processManageSubscriptions(BotRequest request) {
+        var sources = subscriptionService.findSubscriptions(request.chat())
                 .stream()
                 .map(source -> String.format("%s", source.sourceName()))
                 .collect(Collectors.joining("\n"));
 
         var message = new SendMessage(
-                helper.getChatId(update),
-                messageSource.getMessage("bot.digest.button.subscriptions-manage", update)
+                request.chatId(),
+                messageSource.getMessage("bot.digest.button.subscriptions-manage", request)
                         + "\n\n"
                         + sources
         )
                 .replyMarkup(new ReplyKeyboardMarkup(
                         new KeyboardButton[]{
-                                new KeyboardButton(messageSource.getMessage("bot.digest.button.back", update)),
+                                new KeyboardButton(messageSource.getMessage("bot.digest.button.back", request)),
                         },
                         new KeyboardButton[]{
-                                new KeyboardButton(messageSource.getMessage("bot.digest.button.subscriptions-add", update)),
-                                new KeyboardButton(messageSource.getMessage("bot.digest.button.subscriptions-delete", update))
+                                new KeyboardButton(messageSource.getMessage("bot.digest.button.subscriptions-add", request)),
+                                new KeyboardButton(messageSource.getMessage("bot.digest.button.subscriptions-delete", request))
                         }
                 ));
-        telegramBot.execute(message);
+
+        return new SendMessageResponse(message);
     }
 
     @Override
-    public boolean supports(Update update) {
-        var chat = helper.getChat(update);
-        return StringUtils.equalsIgnoreCase(chat.chatStatus(), "SUBSCRIPTIONS");
+    public boolean supports(BotRequest request) {
+        return StringUtils.equalsIgnoreCase(request.chatStatus(), "SUBSCRIPTIONS");
     }
 }

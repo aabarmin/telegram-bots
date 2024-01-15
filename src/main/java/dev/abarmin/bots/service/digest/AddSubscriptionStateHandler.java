@@ -1,18 +1,17 @@
 package dev.abarmin.bots.service.digest;
 
 import com.apptasticsoftware.rssreader.RssReader;
-import com.pengrad.telegrambot.TelegramBot;
-import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.model.request.KeyboardButton;
 import com.pengrad.telegrambot.model.request.ReplyKeyboardMarkup;
 import com.pengrad.telegrambot.model.request.ReplyKeyboardRemove;
 import com.pengrad.telegrambot.request.SendMessage;
-import dev.abarmin.bots.service.support.BotHelper;
-import dev.abarmin.bots.service.support.BotOperation;
-import dev.abarmin.bots.service.support.MessageSourceHelper;
-import dev.abarmin.bots.service.TelegramChatService;
+import dev.abarmin.bots.model.request.BotRequest;
 import dev.abarmin.bots.model.DigestBotUpdate;
 import dev.abarmin.bots.service.SubscriptionService;
+import dev.abarmin.bots.service.TelegramChatService;
+import dev.abarmin.bots.service.support.*;
+import dev.abarmin.bots.model.response.BotResponse;
+import dev.abarmin.bots.model.response.SendMessageResponse;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.ApplicationEventPublisher;
@@ -24,84 +23,89 @@ import java.net.URI;
 @RequiredArgsConstructor
 public class AddSubscriptionStateHandler implements BotOperation {
     private final ApplicationEventPublisher eventPublisher;
-    private final BotHelper helper;
-    private final TelegramBot telegramBot;
     private final TelegramChatService chatService;
     private final MessageSourceHelper messageSource;
     private final RssReader rssReader;
     private final SubscriptionService subscriptionService;
 
     @Override
-    public void process(Update update) {
-        if (isAddSubscription(update)) {
-            processAddSubscription(update);
-        } else if (isBack(update)) {
-            processBack(update);
-        } else if (isValidRss(update)) {
-            processSubscription(update);
+    public BotResponse process(BotRequest request) {
+        if (isAddSubscription(request)) {
+            return processAddSubscription(request);
+        } else if (isBack(request)) {
+            return processBack(request);
+        } else if (isValidRss(request)) {
+            return processSubscription(request);
         } else {
-            processInvalidRss(update);
+            return processInvalidRss(request);
         }
     }
 
-    private void processAddSubscription(Update update) {
-        telegramBot.execute(new SendMessage(
-                helper.getChatId(update),
-                messageSource.getMessage("bot.digest.button.subscriptions-add-request", update)
-        ).replyMarkup(new ReplyKeyboardRemove()));
+    private BotResponse processAddSubscription(BotRequest request) {
+        var message = new SendMessage(
+                request.chatId(),
+                messageSource.getMessage("bot.digest.button.subscriptions-add-request", request)
+        )
+                .replyMarkup(new ReplyKeyboardRemove());
+
+        return new SendMessageResponse(message);
     }
 
-    private boolean isAddSubscription(Update update) {
+    private boolean isAddSubscription(BotRequest request) {
         return StringUtils.equalsIgnoreCase(
-                helper.getMessage(update),
-                messageSource.getMessage("bot.digest.button.subscriptions-add", update)
+                request.message(),
+                messageSource.getMessage("bot.digest.button.subscriptions-add", request)
         );
     }
 
-    private void processInvalidRss(Update update) {
-        telegramBot.execute(new SendMessage(
-                helper.getChatId(update),
-                messageSource.getMessage("bot.digest.button.subscriptions-add-invalid-url", update)
-        ));
+    private BotResponse processInvalidRss(BotRequest request) {
+        var message = new SendMessage(
+                request.chatId(),
+                messageSource.getMessage("bot.digest.button.subscriptions-add-invalid-url", request)
+        );
+
+        return new SendMessageResponse(message);
     }
 
-    private void processSubscription(Update update) {
-        var message = helper.getMessage(update);
-        subscriptionService.subscribe(helper.getChat(update), URI.create(message));
-        chatService.updateStatus(helper.getChat(update), "SUBSCRIPTIONS");
+    private BotResponse processSubscription(BotRequest request) {
+        subscriptionService.subscribe(request.chat(), URI.create(request.message()));
+        chatService.updateStatus(request.chat(), "SUBSCRIPTIONS");
 
         var sendMessage = new SendMessage(
-                helper.getChatId(update),
-                messageSource.getMessage("bot.digest.button.subscriptions-added", update)
+                request.chatId(),
+                messageSource.getMessage("bot.digest.button.subscriptions-added", request)
         )
                 .replyMarkup(new ReplyKeyboardMarkup(
                         new KeyboardButton[]{
-                                new KeyboardButton(messageSource.getMessage("bot.digest.button.back", update)),
+                                new KeyboardButton(messageSource.getMessage("bot.digest.button.back", request)),
                         },
                         new KeyboardButton[]{
-                                new KeyboardButton(messageSource.getMessage("bot.digest.button.subscriptions-add", update)),
-                                new KeyboardButton(messageSource.getMessage("bot.digest.button.subscriptions-delete", update))
+                                new KeyboardButton(messageSource.getMessage("bot.digest.button.subscriptions-add", request)),
+                                new KeyboardButton(messageSource.getMessage("bot.digest.button.subscriptions-delete", request))
                         }
                 ));
-        telegramBot.execute(sendMessage);
+
+        return new SendMessageResponse(sendMessage);
     }
 
-    private void processBack(Update update) {
-        chatService.updateStatus(helper.getChat(update), "SUBSCRIPTIONS");
-        eventPublisher.publishEvent(new DigestBotUpdate(update));
+    private BotResponse processBack(BotRequest request) {
+        chatService.updateStatus(request.chat(), "SUBSCRIPTIONS");
+
+        return BotResponse.noop().then(BotResponse.callback(bot ->
+                eventPublisher.publishEvent(new DigestBotUpdate(request))
+        ));
     }
 
-    private boolean isBack(Update update) {
+    private boolean isBack(BotRequest request) {
         return StringUtils.equalsIgnoreCase(
-                helper.getMessage(update),
-                messageSource.getMessage("bot.digest.button.back", update)
+                request.message(),
+                messageSource.getMessage("bot.digest.button.back", request)
         );
     }
 
-    private boolean isValidRss(Update update) {
-        var message = helper.getMessage(update);
+    private boolean isValidRss(BotRequest request) {
         try {
-            return rssReader.read(message)
+            return rssReader.read(request.message())
                     .findFirst()
                     .isPresent();
         } catch (Exception e) {
@@ -110,8 +114,7 @@ public class AddSubscriptionStateHandler implements BotOperation {
     }
 
     @Override
-    public boolean supports(Update update) {
-        var chat = helper.getChat(update);
-        return StringUtils.equalsIgnoreCase(chat.chatStatus(), "SUBSCRIPTIONS_ADD");
+    public boolean supports(BotRequest request) {
+        return StringUtils.equalsIgnoreCase(request.chatStatus(), "SUBSCRIPTIONS_ADD");
     }
 }
