@@ -79,3 +79,6 @@ jobs:
             rm app.jar
             ln -fs /opt/app/${{ github.event.inputs.VERSION }}/app.jar app.jar
             ./run.sh
+      - name: Update build information
+        run: |
+          echo "Deployed version is ${{ github.event.inputs.VERSION }}" >> $GITHUB_STEP_SUMMARY
