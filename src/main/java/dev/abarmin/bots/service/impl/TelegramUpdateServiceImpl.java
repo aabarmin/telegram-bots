@@ -8,7 +8,6 @@ import dev.abarmin.bots.repository.TelegramBotUpdateRepository;
 import dev.abarmin.bots.service.TelegramChatService;
 import dev.abarmin.bots.service.TelegramUpdateService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -38,7 +37,7 @@ public class TelegramUpdateServiceImpl implements TelegramUpdateService {
         final TelegramBotUpdate botUpdate = new TelegramBotUpdate(
                 null,
                 update.updateId(),
-                AggregateReference.to(chat.chatId()),
+                chat.chatId(),
                 LocalDateTime.now(),
                 null
         );

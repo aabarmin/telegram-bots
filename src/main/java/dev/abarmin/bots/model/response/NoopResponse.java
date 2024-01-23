@@ -1,12 +1,19 @@
 package dev.abarmin.bots.model.response;
 
-import com.pengrad.telegrambot.TelegramBot;
-import lombok.NoArgsConstructor;
+import com.google.common.collect.Lists;
 
-@NoArgsConstructor
-public class NoopResponse extends BotResponse {
+import java.util.Collection;
+
+public record NoopResponse(
+        Collection<BotResponse<?>> nextActions
+) implements BotResponse<NoopResponse> {
+    public NoopResponse() {
+        this(Lists.newArrayList());
+    }
+
     @Override
-    protected void doSend(TelegramBot bot) {
-        // do nothing
+    public NoopResponse then(BotResponse<?> next) {
+        this.nextActions.add(next);
+        return this;
     }
 }

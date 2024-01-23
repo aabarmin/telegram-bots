@@ -10,4 +10,5 @@ http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
     <include file="./003-add-telegram-updates.xml" relativeToChangelogFile="true" />
     <include file="./004-add-telegram-chats.xml" relativeToChangelogFile="true" />
     <include file="./005-add-article-subscriptions.xml" relativeToChangelogFile="true" />
+    <include file="./006-change-update-id-column-type.xml" relativeToChangelogFile="true" />
 </databaseChangeLog>
