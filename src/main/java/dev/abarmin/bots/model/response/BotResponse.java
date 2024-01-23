@@ -3,34 +3,23 @@ package dev.abarmin.bots.model.response;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.request.SendMessage;
 
+import java.util.Collection;
 import java.util.function.Consumer;
 
-public abstract class BotResponse {
-    private BotResponse nextAction = null;
+public interface BotResponse<T extends BotResponse<T>> {
+    T then(BotResponse<?> next);
 
-    public void send(TelegramBot bot) {
-        doSend(bot);
-        if (nextAction != null) {
-            nextAction.send(bot);
-        }
-    }
+    Collection<BotResponse<?>> nextActions();
 
-    protected abstract void doSend(TelegramBot bot);
-
-    public BotResponse then(BotResponse next) {
-        this.nextAction = next;
-        return this;
-    }
-
-    public static BotResponse message(SendMessage message) {
+    static SendMessageResponse message(SendMessage message) {
         return new SendMessageResponse(message);
     }
 
-    public static BotResponse noop() {
+    static NoopResponse noop() {
         return new NoopResponse();
     }
 
-    public static BotResponse callback(Consumer<TelegramBot> consumer) {
+    static CallbackResponse callback(Consumer<TelegramBot> consumer) {
         return new CallbackResponse(consumer);
     }
 }

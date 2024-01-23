@@ -4,6 +4,8 @@ import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.request.SendMessage;
 import dev.abarmin.bots.model.request.BotRequest;
 import dev.abarmin.bots.model.DigestBotUpdate;
+import dev.abarmin.bots.model.response.CallbackResponse;
+import dev.abarmin.bots.model.response.NoopResponse;
 import dev.abarmin.bots.service.support.*;
 import dev.abarmin.bots.model.response.BotResponse;
 import dev.abarmin.bots.model.response.SendMessageResponse;
@@ -36,10 +38,23 @@ public class DigestBotEventListener {
                 .findFirst()
                 .orElseGet(() -> this::notSupported)
                 .process(botRequest);
-        botResponse.send(digestBot);
+        sendMessage(botResponse, digestBot);
     }
 
-    private BotResponse notSupported(BotRequest request) {
+    private void sendMessage(BotResponse<?> botResponse, TelegramBot digestBot) {
+        if (botResponse instanceof SendMessageResponse sendMessage) {
+            digestBot.execute(sendMessage.message());
+        } else if (botResponse instanceof NoopResponse noop) {
+            // do nothing
+        } else if (botResponse instanceof CallbackResponse callback) {
+            callback.callback().accept(digestBot);
+        } else {
+            throw new UnsupportedOperationException();
+        }
+        botResponse.nextActions().forEach(action -> sendMessage(action, digestBot));
+    }
+
+    private SendMessageResponse notSupported(BotRequest request) {
         return new SendMessageResponse(new SendMessage(
                 request.chatId(),
                 messageSource.getMessage(
