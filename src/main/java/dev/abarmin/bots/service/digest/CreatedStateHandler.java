@@ -152,7 +152,7 @@ public class CreatedStateHandler implements BotOperation {
                                         messageSource.getMessage("bot.digest.button.subscriptions", request)
                                 )
                         }
-                ));
+                ).resizeKeyboard(true));
 
         return new SendMessageResponse(telegramMessage);
     }
@@ -176,7 +176,7 @@ public class CreatedStateHandler implements BotOperation {
                                         messageSource.getMessage("bot.digest.button.subscriptions", request)
                                 )
                         }
-                ));
+                ).resizeKeyboard(true));
         return new SendMessageResponse(message);
     }
 

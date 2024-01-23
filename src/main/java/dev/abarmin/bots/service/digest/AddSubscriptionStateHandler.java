@@ -83,7 +83,7 @@ public class AddSubscriptionStateHandler implements BotOperation {
                                 new KeyboardButton(messageSource.getMessage("bot.digest.button.subscriptions-add", request)),
                                 new KeyboardButton(messageSource.getMessage("bot.digest.button.subscriptions-delete", request))
                         }
-                ));
+                ).resizeKeyboard(true));
 
         return new SendMessageResponse(sendMessage);
     }
