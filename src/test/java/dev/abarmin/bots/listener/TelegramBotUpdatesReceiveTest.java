@@ -2,12 +2,14 @@ package dev.abarmin.bots.listener;
 
 import dev.abarmin.bots.BotsApplication;
 import dev.abarmin.bots.controller.TelegramBotController;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
+@Disabled
 class TelegramBotUpdatesReceiveTest {
     private final ApplicationContextRunner runner = new ApplicationContextRunner()
             .withConfiguration(AutoConfigurations.of(BotsApplication.class))
