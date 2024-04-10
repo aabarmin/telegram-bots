@@ -1,6 +1,7 @@
 package dev.abarmin.bots.repository;
 
 import dev.abarmin.bots.entity.rss.Article;
+import dev.abarmin.bots.entity.rss.ArticleSource;
 import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.data.repository.CrudRepository;
 
@@ -35,4 +36,6 @@ public interface ArticleRepository extends CrudRepository<Article, Integer> {
             LocalDate publicationDate,
             int limit
     );
+
+    Collection<Article> findAllByArticleSource(ArticleSource source);
 }
