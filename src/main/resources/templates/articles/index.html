@@ -19,7 +19,8 @@
                 <li class="nav-item">
                     <button type="submit"
                             name="action"
-                            th:value="add" class="btn btn-primary">Add to episode</button>
+                            th:value="add"
+                            class="btn btn-primary">Add to episode</button>
                 </li>
                 <li class="nav-item">
                     &nbsp;
@@ -30,6 +31,21 @@
                                 th:value="${episode.getId()}"
                                 th:text="${episode.getEpisodeName()}"></option>
                     </select>
+                </li>
+                <li class="nav-item">
+                    &nbsp;
+                </li>
+                <li class="nav-item">
+                    <a class="btn btn-outline-primary"
+                       th:if="${notInEpisodes == false}"
+                       th:href="@{/articles?not_in_episodes=true}">
+                        Not in episodes
+                    </a>
+                    <a class="btn btn-primary"
+                       th:if="${notInEpisodes == true}"
+                       th:href="@{/articles}">
+                        Not in episodes
+                    </a>
                 </li>
             </ul>
         </div>

@@ -12,6 +12,7 @@ import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -25,10 +26,12 @@ public class ArticlesController {
     private final EpisodeArticlesRepository episodeArticlesRepository;
 
     @GetMapping("/articles")
-    public ModelAndView index(ModelAndView modelAndView) {
+    public ModelAndView index(ModelAndView modelAndView,
+                              @RequestParam(value = "not_in_episodes", defaultValue = "false") boolean notInEpisodes) {
         modelAndView.addObject("episodes", episodesRepository.findAll());
         modelAndView.addObject("selected", new ArticlesList());
-        modelAndView.addObject("articles", getArticles());
+        modelAndView.addObject("articles", getArticles(notInEpisodes));
+        modelAndView.addObject("notInEpisodes", notInEpisodes);
         modelAndView.setViewName("articles/index");
         return modelAndView;
     }
@@ -53,8 +56,8 @@ public class ArticlesController {
                 ea.getArticleId().getId()).isEmpty();
     }
 
-    private Collection<ArticleRow> getArticles() {
-        final String query = """
+    private Collection<ArticleRow> getArticles(boolean notInEpisodes) {
+        String query = """
                 select
                     article.article_id,
                     article.article_title,
@@ -63,6 +66,13 @@ public class ArticlesController {
                 from articles article
                 inner join article_sources source on article.article_source_id = source.source_id
                 """;
+
+        if (notInEpisodes) {
+            query += """
+                left join episodes_articles ea on ea.article_id = article.article_id
+                where ea.episode_id is null
+            """;
+        }
 
         return jdbcClient.sql(query)
                 .query((rs, rowNum) -> ArticleRow.builder()

@@ -77,9 +77,9 @@ public class EpisodesController {
     private Collection<ArticleRow> getArticles(int episodeId) {
         final String query = """
                 select
-                    a.article_id, 
-                    a.article_title, 
-                    source.source_id, 
+                    a.article_id,
+                    a.article_title,
+                    source.source_id,
                     source.source_name
                 from articles a
                 inner join article_sources source on a.article_source_id = source.source_id
