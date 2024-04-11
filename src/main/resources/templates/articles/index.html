@@ -13,7 +13,7 @@
         <h2>Articles</h2>
     </div>
 
-    <form th:action="@{/articles}" method="post" th:object="${selected}">
+    <form th:action="@{/articles}" method="post" th:object="${articlesList}">
         <div class="row">
             <ul class="nav nav-pills">
                 <li class="nav-item">
@@ -37,12 +37,12 @@
                 </li>
                 <li class="nav-item">
                     <a class="btn btn-primary"
-                       th:if="${showAll == true}"
+                       th:if="*{showAll == true}"
                        th:href="@{/articles?show_all=false}">
                         Hide added
                     </a>
                     <a class="btn btn-outline-primary"
-                       th:if="${showAll == false}"
+                       th:if="*{showAll == false}"
                        th:href="@{/articles?show_all=true}">
                         Show added
                     </a>
@@ -51,9 +51,11 @@
                     &nbsp;
                 </li>
                 <li class="nav-item">
-                    <select class="form-control select2" multiple id="source_selector">
+                    <select class="form-control select2"
+                            multiple
+                            th:field="*{selectedSources}"
+                            id="source_selector">
                         <option th:each="source : ${sources}"
-                                th:selected="${selectedSources.contains(source.id())}"
                                 th:text="${source.sourceName()}"
                                 th:value="${source.id()}"></option>
                     </select>
@@ -104,14 +106,16 @@
                 const href = window.location.href;
                 const base = href.substring(0, href.indexOf("?"))
                 const params = {}
-                href
-                    .substring(href.indexOf("?") + 1)
-                    .split("&")
-                    .forEach(p => {
-                        const key = p.substring(0, p.indexOf("="));
-                        const value = p.substring(p.indexOf("=") + 1);
-                        params[key] = value;
-                    });
+                if (href.indexOf("?") != -1) {
+                    href
+                        .substring(href.indexOf("?") + 1)
+                        .split("&")
+                        .forEach(p => {
+                            const key = p.substring(0, p.indexOf("="));
+                            const value = p.substring(p.indexOf("=") + 1);
+                            params[key] = value;
+                        });
+                }
                 const selected = [];
                 for (let i = 0; i < event.target.selectedOptions.length; i++) {
                     const item = event.target.selectedOptions.item(i);

@@ -7,7 +7,10 @@ import dev.abarmin.bots.repository.ArticleSourceRepository;
 import dev.abarmin.bots.repository.EpisodeArticlesRepository;
 import dev.abarmin.bots.repository.EpisodesRepository;
 import dev.abarmin.bots.scheduler.JdbcHelper;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
@@ -21,7 +24,9 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Controller
@@ -37,11 +42,12 @@ public class ArticlesController {
                               @RequestParam(value = "show_all", defaultValue = "false") boolean showAll,
                               @RequestParam(value = "sources", defaultValue = "") String sourcesString) {
         modelAndView.addObject("episodes", episodesRepository.findAll());
-        modelAndView.addObject("selected", new ArticlesList());
+        modelAndView.addObject("articlesList", ArticlesList.builder()
+                .selectedSources(getSources(sourcesString))
+                .showAll(showAll)
+                .build());
         modelAndView.addObject("articles", getArticles(showAll, getSources(sourcesString)));
         modelAndView.addObject("sources", articleSourceRepository.findAll());
-        modelAndView.addObject("selectedSources", getSources(sourcesString));
-        modelAndView.addObject("showAll", showAll);
         modelAndView.setViewName("articles/index");
         return modelAndView;
     }
@@ -57,7 +63,19 @@ public class ArticlesController {
                 .toList();
         episodeArticlesRepository.saveAll(newMapping);
 
-        return new RedirectView("/articles");
+        Map<String, String> params = new HashMap<>();
+        if (articlesList.isShowAll()) {
+            params.put("show_all", "true");
+        }
+        if (!articlesList.getSelectedSources().isEmpty()) {
+            params.put("sources", StringUtils.join(articlesList.getSelectedSources(), ","));
+        }
+        String redirectUrl = "/articles?" + params.entrySet()
+                .stream()
+                .map(kv -> kv.getKey() + "=" + kv.getValue())
+                .collect(Collectors.joining("&"));
+
+        return new RedirectView(redirectUrl);
     }
 
     private boolean notYetAdded(EpisodeArticle ea) {
@@ -145,8 +163,13 @@ public class ArticlesController {
     }
 
     @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class ArticlesList {
         private Collection<Integer> selected;
+        private Collection<Integer> selectedSources;
+        private boolean showAll;
         private int episodeId;
     }
 }
