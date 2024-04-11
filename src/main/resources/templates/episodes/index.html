@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en"
+      layout:decorate="~{layout.html}"
+      xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="">
+<head>
+    <meta charset="UTF-8">
+    <title>Telegram Tools</title>
+</head>
+<body>
+<th:block layout:fragment="main-content">
+
+    <div class="row">
+        <h2>Episodes</h2>
+    </div>
+
+    <div class="row">
+        <ul class="nav nav-pills">
+            <li class="nav-item">
+                <a class="nav-link active" href="/episodes/add">Add Episode</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="row">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Episode Name</th>
+                <th>Episode Status</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="episode : ${episodes}">
+                <td th:text="${episode.getEpisodeName()}"></td>
+                <td th:text="${episode.getEpisodeStatus()}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</th:block>
+</body>
+</html>

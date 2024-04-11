@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en"
+      layout:decorate="~{layout.html}"
+      xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="">
+<head>
+    <meta charset="UTF-8">
+    <title>Telegram Tools</title>
+</head>
+<body>
+<th:block layout:fragment="main-content">
+
+    <div class="row">
+        <h2>Edit episode</h2>
+    </div>
+
+    <div class="row">
+        <ul class="nav nav-pills">
+            <li class="nav-item">
+                <a class="nav-link active" href="/episodes">Back</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="row">
+        <form th:action="@{/episodes}" th:object="${episode}" method="post">
+            <input th:type="hidden" th:value="*{id}">
+            <div class="form-group row">
+                <label for="episodeName" class="col-sm-2">Episode Name:</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="episodeName" th:field="*{episodeName}" required="required">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="episodeName" class="col-sm-2">Episode Status:</label>
+                <div class="col-sm-10">
+                    <select class="form-control" id="episodeStatus" th:field="*{episodeStatus}" required="required">
+                        <option value="DRAFT">DRAFT</option>
+                        <option value="PUBLISHED">PUBLISHED</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row">
+                <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+        </form>
+    </div>
+
+</th:block>
+</body>
+</html>

@@ -8,6 +8,8 @@ spring:
 
 telegram:
   bot:
+    dump:
+      location: ./dump.json
     listener:
       webhook:
         enabled: true
