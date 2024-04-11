@@ -1,14 +1,29 @@
 package dev.abarmin.bots.repository;
 
 import dev.abarmin.bots.entity.rss.ArticleSource;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.data.repository.ListCrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.StreamSupport;
 
-public interface ArticleSourceRepository extends ListCrudRepository<ArticleSource, Integer> {
+public interface ArticleSourceRepository extends
+        PagingAndSortingRepository<ArticleSource, Integer>,
+        ListCrudRepository<ArticleSource, Integer> {
+
+    @Override
+    default List<ArticleSource> findAll() {
+        return StreamSupport.stream(findAll(Sort.by(Sort.Direction.ASC, "sourceName")).spliterator(), false)
+                .toList();
+
+    }
+
     /**
      * Find one by source URI.
      *
@@ -19,6 +34,7 @@ public interface ArticleSourceRepository extends ListCrudRepository<ArticleSourc
 
     /**
      * Find all sources with the most number of subscribers.
+     *
      * @return
      */
     @Query("""
