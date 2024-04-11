@@ -36,15 +36,15 @@
                     &nbsp;
                 </li>
                 <li class="nav-item">
-                    <a class="btn btn-outline-primary"
-                       th:if="${notInEpisodes == false}"
-                       th:href="@{/articles?not_in_episodes=true}">
-                        Not in episodes
-                    </a>
                     <a class="btn btn-primary"
-                       th:if="${notInEpisodes == true}"
-                       th:href="@{/articles}">
-                        Not in episodes
+                       th:if="${showAll == true}"
+                       th:href="@{/articles?show_all=false}">
+                        Hide added
+                    </a>
+                    <a class="btn btn-outline-primary"
+                       th:if="${showAll == false}"
+                       th:href="@{/articles?show_all=true}">
+                        Show added
                     </a>
                 </li>
             </ul>
@@ -55,9 +55,10 @@
                 <thead>
                 <tr>
                     <th>&nbsp;</th>
-                    <th>Article Id</th>
+                    <th>#</th>
                     <th>Article Name</th>
                     <th>Source Name</th>
+                    <th>Added</th>
                     <th>Episodes</th>
                 </tr>
                 </thead>
@@ -73,6 +74,7 @@
                            target="_blank"></a>
                     </td>
                     <td th:text="${article.getSourceName()}"></td>
+                    <td th:text="${#temporals.format(article.getArticleAdded(), 'dd-MM-yyyy HH:mm')}"></td>
                     <td>
                         <ul>
                             <li th:each="episode : ${article.getEpisodes()}"

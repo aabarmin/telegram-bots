@@ -5,6 +5,7 @@ import dev.abarmin.bots.controller.model.ArticleRow;
 import dev.abarmin.bots.entity.episodes.EpisodeArticle;
 import dev.abarmin.bots.repository.EpisodeArticlesRepository;
 import dev.abarmin.bots.repository.EpisodesRepository;
+import dev.abarmin.bots.scheduler.JdbcHelper;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
@@ -27,11 +28,11 @@ public class ArticlesController {
 
     @GetMapping("/articles")
     public ModelAndView index(ModelAndView modelAndView,
-                              @RequestParam(value = "not_in_episodes", defaultValue = "false") boolean notInEpisodes) {
+                              @RequestParam(value = "show_all", defaultValue = "false") boolean showAll) {
         modelAndView.addObject("episodes", episodesRepository.findAll());
         modelAndView.addObject("selected", new ArticlesList());
-        modelAndView.addObject("articles", getArticles(notInEpisodes));
-        modelAndView.addObject("notInEpisodes", notInEpisodes);
+        modelAndView.addObject("articles", getArticles(showAll));
+        modelAndView.addObject("showAll", showAll);
         modelAndView.setViewName("articles/index");
         return modelAndView;
     }
@@ -56,30 +57,35 @@ public class ArticlesController {
                 ea.getArticleId().getId()).isEmpty();
     }
 
-    private Collection<ArticleRow> getArticles(boolean notInEpisodes) {
+    private Collection<ArticleRow> getArticles(boolean showAll) {
         String query = """
                 select
                     article.article_id,
                     article.article_title,
-                    article.article_url, 
+                    article.article_url,
+                    article.article_added,
                     source.source_id,
                     source.source_name
                 from articles article
                 inner join article_sources source on article.article_source_id = source.source_id
                 """;
 
-        if (notInEpisodes) {
+        if (!showAll) {
             query += """
                 left join episodes_articles ea on ea.article_id = article.article_id
                 where ea.episode_id is null
             """;
         }
+        query += """
+        order by article.article_added desc
+        """;
 
         return jdbcClient.sql(query)
                 .query((rs, rowNum) -> ArticleRow.builder()
                         .articleId(rs.getInt("article_id"))
                         .articleTitle(rs.getString("article_title"))
                         .articleUrl(rs.getString("article_url"))
+                        .articleAdded(JdbcHelper.readLocalDateTime(rs.getTimestamp("article_added")))
                         .sourceId(rs.getInt("source_id"))
                         .sourceName(rs.getString("source_name"))
                         .episodes(getEpisodes(rs.getInt("article_id")))
