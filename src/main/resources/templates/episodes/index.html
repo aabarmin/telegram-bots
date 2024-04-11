@@ -31,7 +31,10 @@
             </thead>
             <tbody>
             <tr th:each="episode : ${episodes}">
-                <td th:text="${episode.getEpisodeName()}"></td>
+                <td>
+                    <a th:href="@{'/episodes/' + ${episode.getId()}}"
+                       th:text="${episode.getEpisodeName()}" />
+                </td>
                 <td th:text="${episode.getEpisodeStatus()}"></td>
             </tr>
             </tbody>

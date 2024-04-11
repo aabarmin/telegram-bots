@@ -1,9 +1,10 @@
 package dev.abarmin.bots.controller;
 
+import dev.abarmin.bots.controller.model.ArticleEpisode;
+import dev.abarmin.bots.controller.model.ArticleRow;
 import dev.abarmin.bots.entity.episodes.EpisodeArticle;
 import dev.abarmin.bots.repository.EpisodeArticlesRepository;
 import dev.abarmin.bots.repository.EpisodesRepository;
-import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
@@ -92,25 +93,6 @@ public class ArticlesController {
                         .episodeName(rs.getString("episode_name"))
                         .build())
                 .list();
-    }
-
-    @Data
-    @Builder
-    public static class ArticleRow {
-        private int articleId;
-        private String articleTitle;
-
-        private int sourceId;
-        private String sourceName;
-
-        private Collection<ArticleEpisode> episodes;
-    }
-
-    @Data
-    @Builder
-    public static class ArticleEpisode {
-        private String episodeId;
-        private String episodeName;
     }
 
     @Data
