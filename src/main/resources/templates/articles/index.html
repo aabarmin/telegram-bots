@@ -47,6 +47,17 @@
                         Show added
                     </a>
                 </li>
+                <li class="nav-item">
+                    &nbsp;
+                </li>
+                <li class="nav-item">
+                    <select class="form-control select2" multiple id="source_selector">
+                        <option th:each="source : ${sources}"
+                                th:selected="${selectedSources.contains(source.id())}"
+                                th:text="${source.sourceName()}"
+                                th:value="${source.id()}"></option>
+                    </select>
+                </li>
             </ul>
         </div>
 
@@ -86,6 +97,32 @@
             </table>
         </div>
     </form>
+
+    <script>
+        $(document).ready(function(){
+            $("#source_selector").change(function(event){
+                const href = window.location.href;
+                const base = href.substring(0, href.indexOf("?"))
+                const params = {}
+                href
+                    .substring(href.indexOf("?") + 1)
+                    .split("&")
+                    .forEach(p => {
+                        const key = p.substring(0, p.indexOf("="));
+                        const value = p.substring(p.indexOf("=") + 1);
+                        params[key] = value;
+                    });
+                const selected = [];
+                for (let i = 0; i < event.target.selectedOptions.length; i++) {
+                    const item = event.target.selectedOptions.item(i);
+                    selected.push(item.value);
+                }
+                params["sources"] = selected.join(",")
+
+                window.location.href = base + "?" + Object.keys(params).map(key => {return key + "=" + params[key]}).join("&")
+            });
+        });
+    </script>
 
 </th:block>
 </body>

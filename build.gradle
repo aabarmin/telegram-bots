@@ -27,6 +27,7 @@ ext {
 	set('telegramBotApiVersion', '6.9.1')
 	set('twitterBootstrapVersion', '5.2.3')
 	set('googleGuavaVersion', '31.0.1-jre')
+	set('select2Version', '4.0.13')
 }
 
 dependencies {
@@ -39,7 +40,12 @@ dependencies {
 	implementation 'org.liquibase:liquibase-core'
 	implementation "com.apptasticsoftware:rssreader:${rssReaderVersion}"
 	implementation "com.github.pengrad:java-telegram-bot-api:${telegramBotApiVersion}"
+
 	implementation "org.webjars.npm:github-com-twbs-bootstrap:${twitterBootstrapVersion}"
+	implementation "org.webjars.npm:select2:${select2Version}"
+	implementation "org.webjars.npm:select2-bootstrap-5-theme:1.3.0"
+	implementation "org.webjars.npm:jquery:3.7.1"
+
 	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
 	implementation "com.google.guava:guava:${googleGuavaVersion}"
 
