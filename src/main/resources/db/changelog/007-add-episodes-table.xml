@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="007" author="Aleksandr Barmin">
+        <createTable tableName="EPISODES">
+            <column name="EPISODE_ID" autoIncrement="true" type="int">
+                <constraints primaryKey="true" primaryKeyName="episodes_pk"/>
+            </column>
+            <column name="EPISODE_NAME" type="VARCHAR(1024)">
+                <constraints
+                        unique="true" uniqueConstraintName="episode_name_unique"
+                        nullable="false" notNullConstraintName="episode_name_not_null"
+                />
+            </column>
+            <column name="EPISODE_STATUS" type="VARCHAR(32)">
+                <constraints nullable="false" notNullConstraintName="episode_status_not_null" />
+            </column>
+            <column name="CREATED_AT" type="DATETIME" />
+            <column name="UPDATED_AT" type="DATETIME" />
+        </createTable>
+        <createTable tableName="EPISODES_ARTICLES">
+            <column name="ID" autoIncrement="true" type="int">
+                <constraints primaryKey="true" primaryKeyName="episodes_articles_pk" />
+            </column>
+            <column name="EPISODE_ID" type="int" />
+            <column name="ARTICLE_ID" type="int" />
+        </createTable>
+
+        <addForeignKeyConstraint
+            baseTableName="EPISODES_ARTICLES" baseColumnNames="EPISODE_ID"
+            referencedTableName="EPISODES" referencedColumnNames="EPISODE_ID"
+            constraintName="episodes_articles_episode_id_fk" />
+        <addForeignKeyConstraint
+            baseTableName="EPISODES_ARTICLES" baseColumnNames="ARTICLE_ID"
+            referencedTableName="ARTICLES" referencedColumnNames="ARTICLE_ID"
+            constraintName="episodes_articles_article_id_fk" />
+    </changeSet>
+</databaseChangeLog>

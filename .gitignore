@@ -39,3 +39,4 @@ out/
 ### Ignore Database ###
 database.mv.db
 database.trace.db
+dump.json

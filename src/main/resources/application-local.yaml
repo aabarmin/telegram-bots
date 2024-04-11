@@ -1,7 +1,12 @@
+spring:
+  security:
+    user:
+      name: test
+      password: test
 telegram:
   bot:
     listener:
       webhook:
         enabled: false
       polling:
-        enabled: true
+        enabled: false

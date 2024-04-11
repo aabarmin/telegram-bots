@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en"
+      layout:decorate="~{layout.html}"
+      xmlns:layout="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Telegram Tools</title>
+</head>
+<body>
+<th:block layout:fragment="main-content">
+
+    <div class="row">
+        <h2>Articles</h2>
+    </div>
+
+    <form th:action="@{/articles}" method="post" th:object="${selected}">
+        <div class="row">
+            <ul class="nav nav-pills">
+                <li class="nav-item">
+                    <button type="submit"
+                            name="action"
+                            th:value="add"
+                            class="btn btn-primary">Add to episode</button>
+                </li>
+                <li class="nav-item">
+                    &nbsp;
+                </li>
+                <li class="nav-item">
+                    <select th:field="*{episodeId}" class="form-control">
+                        <option th:each="episode : ${episodes}"
+                                th:value="${episode.getId()}"
+                                th:text="${episode.getEpisodeName()}"></option>
+                    </select>
+                </li>
+                <li class="nav-item">
+                    &nbsp;
+                </li>
+                <li class="nav-item">
+                    <a class="btn btn-outline-primary"
+                       th:if="${notInEpisodes == false}"
+                       th:href="@{/articles?not_in_episodes=true}">
+                        Not in episodes
+                    </a>
+                    <a class="btn btn-primary"
+                       th:if="${notInEpisodes == true}"
+                       th:href="@{/articles}">
+                        Not in episodes
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="row">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>&nbsp;</th>
+                    <th>Article Id</th>
+                    <th>Article Name</th>
+                    <th>Source Name</th>
+                    <th>Episodes</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="article : ${articles}">
+                    <td>
+                        <input type="checkbox" th:field="*{selected}" th:value="${article.getArticleId()}"/>
+                    </td>
+                    <td th:text="${article.getArticleId()}"></td>
+                    <td th:text="${article.getArticleTitle()}"></td>
+                    <td th:text="${article.getSourceName()}"></td>
+                    <td>
+                        <ul>
+                            <li th:each="episode : ${article.getEpisodes()}"
+                                th:text="${episode.getEpisodeName()}"></li>
+                        </ul>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </form>
+
+</th:block>
+</body>
+</html>
