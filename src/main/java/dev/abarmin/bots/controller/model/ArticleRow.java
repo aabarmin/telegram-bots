@@ -10,6 +10,7 @@ import java.util.Collection;
 public class ArticleRow {
     private int articleId;
     private String articleTitle;
+    private String articleUrl;
 
     private int sourceId;
     private String sourceName;

@@ -61,6 +61,7 @@ public class ArticlesController {
                 select
                     article.article_id,
                     article.article_title,
+                    article.article_url, 
                     source.source_id,
                     source.source_name
                 from articles article
@@ -78,6 +79,7 @@ public class ArticlesController {
                 .query((rs, rowNum) -> ArticleRow.builder()
                         .articleId(rs.getInt("article_id"))
                         .articleTitle(rs.getString("article_title"))
+                        .articleUrl(rs.getString("article_url"))
                         .sourceId(rs.getInt("source_id"))
                         .sourceName(rs.getString("source_name"))
                         .episodes(getEpisodes(rs.getInt("article_id")))
