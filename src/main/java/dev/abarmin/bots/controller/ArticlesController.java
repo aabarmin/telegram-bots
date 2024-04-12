@@ -6,15 +6,15 @@ import dev.abarmin.bots.entity.episodes.EpisodeArticle;
 import dev.abarmin.bots.repository.ArticleSourceRepository;
 import dev.abarmin.bots.repository.EpisodeArticlesRepository;
 import dev.abarmin.bots.repository.EpisodesRepository;
-import dev.abarmin.bots.scheduler.JdbcHelper;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
+import org.jooq.DSLContext;
+import org.jooq.impl.DSL;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
-import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,10 +29,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static dev.abarmin.bots.entity.jooq.Tables.ARTICLES;
+import static dev.abarmin.bots.entity.jooq.Tables.ARTICLE_SOURCES;
+import static dev.abarmin.bots.entity.jooq.Tables.EPISODES;
+import static dev.abarmin.bots.entity.jooq.Tables.EPISODES_ARTICLES;
+
 @Controller
 @RequiredArgsConstructor
 public class ArticlesController {
-    private final JdbcClient jdbcClient;
+    private final DSLContext dslContext;
     private final EpisodesRepository episodesRepository;
     private final EpisodeArticlesRepository episodeArticlesRepository;
     private final ArticleSourceRepository articleSourceRepository;
@@ -94,72 +99,53 @@ public class ArticlesController {
     }
 
     private Collection<ArticleRow> getArticles(boolean showAll, Collection<Integer> sources) {
-        String query = """
-                select
-                    article.article_id,
-                    article.article_title,
-                    article.article_url,
-                    article.article_added,
-                    source.source_id,
-                    source.source_name
-                from articles article
-                inner join article_sources source on article.article_source_id = source.source_id
-                """;
+        var builder = dslContext.select(
+                        ARTICLES.ARTICLE_ID,
+                        ARTICLES.ARTICLE_TITLE,
+                        ARTICLES.ARTICLE_URL,
+                        ARTICLES.ARTICLE_ADDED,
+                        ARTICLE_SOURCES.SOURCE_ID,
+                        ARTICLE_SOURCES.SOURCE_NAME)
+                .from(ARTICLES)
+                .innerJoin(ARTICLE_SOURCES).on(ARTICLES.ARTICLE_SOURCE_ID.eq(ARTICLE_SOURCES.SOURCE_ID));
+        var conditions = DSL.trueCondition();
 
         if (!showAll) {
-            query += """
-                        left join episodes_articles ea on ea.article_id = article.article_id
-                        where ea.episode_id is null
-                    """;
-
+            builder = builder.leftJoin(EPISODES_ARTICLES).on(EPISODES_ARTICLES.ARTICLE_ID.eq(ARTICLES.ARTICLE_ID));
+            conditions.add(EPISODES_ARTICLES.EPISODE_ID.isNull());
         }
         if (!sources.isEmpty()) {
-            if (showAll) {
-                query += "where ";
-            } else {
-                query += "and ";
-            }
-            query += " source.source_id in (:sources) ";
+            conditions.add(ARTICLE_SOURCES.SOURCE_ID.in(sources));
         }
-        query += """
-                order by article.article_added desc
-                """;
-
-        JdbcClient.StatementSpec sqlSpec = jdbcClient.sql(query);
-        if (!sources.isEmpty()) {
-            sqlSpec.param("sources", sources);
-        }
-        return sqlSpec
-                .query((rs, rowNum) -> ArticleRow.builder()
-                        .articleId(rs.getInt("article_id"))
-                        .articleTitle(rs.getString("article_title"))
-                        .articleUrl(rs.getString("article_url"))
-                        .articleAdded(JdbcHelper.readLocalDateTime(rs.getTimestamp("article_added")))
-                        .sourceId(rs.getInt("source_id"))
-                        .sourceName(rs.getString("source_name"))
-                        .episodes(getEpisodes(rs.getInt("article_id")))
-                        .build())
-                .list();
+        return builder.where(conditions)
+                .orderBy(ARTICLES.ARTICLE_ADDED.desc())
+                .fetch()
+                .map(record -> {
+                    return ArticleRow.builder()
+                            .articleId(record.get(ARTICLES.ARTICLE_ID))
+                            .articleTitle(record.get(ARTICLES.ARTICLE_TITLE))
+                            .articleUrl(record.get(ARTICLES.ARTICLE_URL))
+                            .articleAdded(record.get(ARTICLES.ARTICLE_ADDED))
+                            .sourceId(record.get(ARTICLE_SOURCES.SOURCE_ID))
+                            .sourceName(record.get(ARTICLE_SOURCES.SOURCE_NAME))
+                            .episodes(getEpisodes(record.get(ARTICLES.ARTICLE_ID)))
+                            .build();
+                });
     }
 
     private Collection<ArticleEpisode> getEpisodes(int articleId) {
-        final String query = """
-                select
-                    episode.episode_id,
-                    episode.episode_name
-                from episodes episode
-                inner join episodes_articles ea on ea.episode_id = episode.episode_id
-                inner join articles article on article.article_id = ea.article_id
-                where article.article_id = ?
-                """;
-
-        return jdbcClient.sql(query)
-                .param(articleId)
-                .query((rs, rowNum) -> ArticleEpisode.builder()
-                        .episodeId(rs.getString("episode_id"))
-                        .episodeName(rs.getString("episode_name"))
-                        .build())
-                .list();
+        return dslContext.select(EPISODES.EPISODE_ID, EPISODES.EPISODE_NAME)
+                .from(EPISODES)
+                .innerJoin(EPISODES_ARTICLES).on(EPISODES_ARTICLES.EPISODE_ID.eq(EPISODES.EPISODE_ID))
+                .innerJoin(ARTICLES).on(EPISODES_ARTICLES.ARTICLE_ID.eq(ARTICLES.ARTICLE_ID))
+                .where(ARTICLES.ARTICLE_ID.eq(articleId))
+                .fetch()
+                .map(record -> {
+                    return ArticleEpisode.builder()
+                            .episodeId(record.get(EPISODES.EPISODE_ID))
+                            .episodeName(record.get(EPISODES.EPISODE_NAME))
+                            .build();
+                });
     }
 
     @Data

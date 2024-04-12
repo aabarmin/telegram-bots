@@ -6,6 +6,6 @@ import lombok.Data;
 @Data
 @Builder
 public class ArticleEpisode {
-    private String episodeId;
+    private int episodeId;
     private String episodeName;
 }

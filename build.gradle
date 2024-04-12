@@ -2,10 +2,14 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.2.4'
 	id 'io.spring.dependency-management' version '1.1.4'
+	id 'org.jooq.jooq-codegen-gradle' version '3.19.7'
+	id 'org.liquibase.gradle' version '2.2.0'
 }
 
 group = 'dev.abarmin'
 version = '0.0.1-SNAPSHOT'
+
+apply plugin: 'org.liquibase.gradle'
 
 java {
 	sourceCompatibility = '17'
@@ -28,10 +32,12 @@ ext {
 	set('twitterBootstrapVersion', '5.2.3')
 	set('googleGuavaVersion', '31.0.1-jre')
 	set('select2Version', '4.0.13')
+	set('jooq.version', '3.19.7')
 }
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
+	implementation 'org.springframework.boot:spring-boot-starter-jooq'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
@@ -64,6 +70,53 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 	testImplementation "com.tngtech.archunit:archunit:${archunitVersion}"
+
+	jooqCodegen "com.h2database:h2:2.2.224"
+
+	liquibaseRuntime "org.liquibase:liquibase-core:4.24.0"
+	liquibaseRuntime "info.picocli:picocli:4.7.5"
+	liquibaseRuntime "org.yaml:snakeyaml:1.33"
+	liquibaseRuntime "com.h2database:h2:2.2.224"
+}
+
+jooq {
+	configuration {
+		jdbc {
+			driver = 'org.h2.Driver'
+			url = "jdbc:h2:${projectDir}/database"
+			user = 'sa'
+			password = 'sa'
+		}
+		generator {
+			database {
+				name = 'org.jooq.meta.h2.H2Database'
+				inputSchema = 'PUBLIC'
+				excludes = """
+					DATABASECHANGELOG | DATABASECHANGELOGLOCK
+					"""
+			}
+			target {
+				packageName = 'dev.abarmin.bots.entity.jooq'
+				directory = 'src/main/java'
+			}
+		}
+	}
+}
+
+liquibase {
+	activities {
+		main {
+			changelogFile "db/changelog/db.changelog-master.xml"
+			url "jdbc:h2:${projectDir}/database"
+			username 'sa'
+			password 'sa'
+			classpath "src/main/resources"
+		}
+	}
+}
+
+tasks.named('jooqCodegen') {
+	dependsOn('update')
 }
 
 tasks.named('test') {
