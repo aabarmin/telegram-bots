@@ -6,7 +6,7 @@ on:
       VERSION:
         description: 'Version to deploy'
         required: true
-        default: '0.0.x'
+        default: '0.0.00'
       BRANCH:
         description: 'Branch to deploy'
         required: true
