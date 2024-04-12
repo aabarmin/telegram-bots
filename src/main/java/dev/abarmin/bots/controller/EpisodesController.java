@@ -6,7 +6,7 @@ import dev.abarmin.bots.repository.EpisodeArticlesRepository;
 import dev.abarmin.bots.repository.EpisodesRepository;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import org.springframework.jdbc.core.simple.JdbcClient;
+import org.jooq.DSLContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,12 +17,16 @@ import org.springframework.web.servlet.view.RedirectView;
 import java.util.Collection;
 import java.util.Optional;
 
+import static dev.abarmin.bots.entity.jooq.Tables.ARTICLES;
+import static dev.abarmin.bots.entity.jooq.Tables.ARTICLE_SOURCES;
+import static dev.abarmin.bots.entity.jooq.Tables.EPISODES_ARTICLES;
+
 @Controller
 @RequiredArgsConstructor
 public class EpisodesController {
     private final EpisodeArticlesRepository episodeArticlesRepository;
     private final EpisodesRepository repository;
-    private final JdbcClient jdbcClient;
+    private final DSLContext dslContext;
 
     @GetMapping("/episodes")
     public ModelAndView index(ModelAndView modelAndView) {
@@ -75,27 +79,24 @@ public class EpisodesController {
     }
 
     private Collection<ArticleRow> getArticles(int episodeId) {
-        final String query = """
-                select
-                    a.article_id,
-                    a.article_title,
-                    a.article_url,
-                    source.source_id,
-                    source.source_name
-                from articles a
-                inner join article_sources source on a.article_source_id = source.source_id
-                inner join episodes_articles ea on ea.article_id = a.article_id
-                where ea.episode_id = ?
-                """;
-        return jdbcClient.sql(query)
-                .param(episodeId)
-                .query((rs, no) -> ArticleRow.builder()
-                        .articleId(rs.getInt("article_id"))
-                        .articleTitle(rs.getString("article_title"))
-                        .articleUrl(rs.getString("article_url"))
-                        .sourceId(rs.getInt("source_id"))
-                        .sourceName(rs.getString("source_name"))
-                        .build())
-                .list();
+        return dslContext.select(
+                ARTICLES.ARTICLE_ID,
+                ARTICLES.ARTICLE_TITLE,
+                ARTICLES.ARTICLE_URL,
+                ARTICLE_SOURCES.SOURCE_ID,
+                ARTICLE_SOURCES.SOURCE_NAME)
+                .from(ARTICLES)
+                .innerJoin(ARTICLE_SOURCES).on(ARTICLES.ARTICLE_SOURCE_ID.eq(ARTICLE_SOURCES.SOURCE_ID))
+                .innerJoin(EPISODES_ARTICLES).on(EPISODES_ARTICLES.ARTICLE_ID.eq(ARTICLES.ARTICLE_ID))
+                .where(EPISODES_ARTICLES.EPISODE_ID.eq(episodeId))
+                .fetch(record -> {
+                    return ArticleRow.builder()
+                            .articleId(record.get(ARTICLES.ARTICLE_ID))
+                            .articleTitle(record.get(ARTICLES.ARTICLE_TITLE))
+                            .articleUrl(record.get(ARTICLES.ARTICLE_URL))
+                            .sourceId(record.get(ARTICLE_SOURCES.SOURCE_ID))
+                            .sourceName(record.get(ARTICLE_SOURCES.SOURCE_NAME))
+                            .build();
+                });
     }
 }
