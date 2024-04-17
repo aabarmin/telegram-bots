@@ -67,7 +67,7 @@
             <table class="table">
                 <thead>
                 <tr>
-                    <th>&nbsp;</th>
+                    <th><input type="checkbox" id="selectAll"></th>
                     <th>#</th>
                     <th>Article Name</th>
                     <th>Source Name</th>
@@ -102,6 +102,10 @@
 
     <script>
         $(document).ready(function(){
+            $("#selectAll").click(function(){
+                $('input:checkbox[name="selected"]').not(this).prop('checked', this.checked);
+            });
+
             $("#source_selector").change(function(event){
                 const href = window.location.href;
                 const base = href.substring(0, href.indexOf("?"))
