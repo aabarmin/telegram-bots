@@ -1,5 +1,6 @@
 package dev.abarmin.bots.controller;
 
+import com.google.common.collect.Lists;
 import dev.abarmin.bots.controller.model.ArticleEpisode;
 import dev.abarmin.bots.controller.model.ArticleRow;
 import dev.abarmin.bots.entity.episodes.EpisodeArticle;
@@ -12,6 +13,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
+import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.impl.DSL;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
@@ -108,7 +110,7 @@ public class ArticlesController {
                         ARTICLE_SOURCES.SOURCE_NAME)
                 .from(ARTICLES)
                 .innerJoin(ARTICLE_SOURCES).on(ARTICLES.ARTICLE_SOURCE_ID.eq(ARTICLE_SOURCES.SOURCE_ID));
-        var conditions = DSL.trueCondition();
+        final Collection<Condition> conditions = Lists.newArrayList();
 
         if (!showAll) {
             builder = builder.leftJoin(EPISODES_ARTICLES).on(EPISODES_ARTICLES.ARTICLE_ID.eq(ARTICLES.ARTICLE_ID));
@@ -117,7 +119,10 @@ public class ArticlesController {
         if (!sources.isEmpty()) {
             conditions.add(ARTICLE_SOURCES.SOURCE_ID.in(sources));
         }
-        return builder.where(conditions)
+        if (conditions.isEmpty()) {
+            conditions.add(DSL.trueCondition());
+        }
+        return builder.where(DSL.and(conditions))
                 .orderBy(ARTICLES.ARTICLE_ADDED.desc())
                 .fetch()
                 .map(record -> {

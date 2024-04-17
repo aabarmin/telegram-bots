@@ -25,7 +25,8 @@ public class DefaultLocalSourcesAdder implements ApplicationRunner {
     private final RssReaderScheduler scheduler;
 
     private final Map<String, URI> defaultSources = Map.of(
-            "Thorben Janssen", URI.create("https://thorben-janssen.com/feed/")
+            "Thorben Janssen", URI.create("https://thorben-janssen.com/feed/"),
+            "InfoQ", URI.create("https://feed.infoq.com/")
     );
 
     @Override
