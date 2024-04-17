@@ -26,8 +26,9 @@ public class Episode {
     @Column("EPISODE_STATUS")
     private EpisodeStatus episodeStatus;
     @CreatedDate
+    @Builder.Default
     @Column("CREATED_AT")
-    private LocalDateTime createdAt;
+    private LocalDateTime createdAt = LocalDateTime.now();
     @LastModifiedDate
     @Column("UPDATED_AT")
     private LocalDateTime updatedAt;
