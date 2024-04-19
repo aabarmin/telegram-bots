@@ -3,7 +3,9 @@ package dev.abarmin.bots.controller;
 import com.google.common.collect.Lists;
 import dev.abarmin.bots.controller.model.ArticleEpisode;
 import dev.abarmin.bots.controller.model.ArticleRow;
+import dev.abarmin.bots.entity.episodes.Episode;
 import dev.abarmin.bots.entity.episodes.EpisodeArticle;
+import dev.abarmin.bots.entity.rss.ArticleSource;
 import dev.abarmin.bots.repository.ArticleSourceRepository;
 import dev.abarmin.bots.repository.EpisodeArticlesRepository;
 import dev.abarmin.bots.repository.EpisodesRepository;
@@ -19,6 +21,7 @@ import org.jooq.impl.DSL;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
@@ -35,6 +38,7 @@ import static dev.abarmin.bots.entity.jooq.Tables.ARTICLES;
 import static dev.abarmin.bots.entity.jooq.Tables.ARTICLE_SOURCES;
 import static dev.abarmin.bots.entity.jooq.Tables.EPISODES;
 import static dev.abarmin.bots.entity.jooq.Tables.EPISODES_ARTICLES;
+import static dev.abarmin.bots.service.DefaultEpisodeCreator.DEFAULT_EPISODE_NAME;
 
 @Controller
 @RequiredArgsConstructor
@@ -44,19 +48,34 @@ public class ArticlesController {
     private final EpisodeArticlesRepository episodeArticlesRepository;
     private final ArticleSourceRepository articleSourceRepository;
 
+    @ModelAttribute("episodes")
+    public Iterable<Episode> episodes() {
+        return episodesRepository.findAll();
+    }
+
+    @ModelAttribute("sources")
+    public Iterable<ArticleSource> sources() {
+        return articleSourceRepository.findAll();
+    }
+
     @GetMapping("/articles")
     public ModelAndView index(ModelAndView modelAndView,
                               @RequestParam(value = "show_all", defaultValue = "false") boolean showAll,
                               @RequestParam(value = "sources", defaultValue = "") String sourcesString) {
-        modelAndView.addObject("episodes", episodesRepository.findAll());
         modelAndView.addObject("articlesList", ArticlesList.builder()
                 .selectedSources(getSources(sourcesString))
                 .showAll(showAll)
+                .episodeId(getDefaultEpisodeId())
                 .build());
         modelAndView.addObject("articles", getArticles(showAll, getSources(sourcesString)));
-        modelAndView.addObject("sources", articleSourceRepository.findAll());
         modelAndView.setViewName("articles/index");
         return modelAndView;
+    }
+
+    private int getDefaultEpisodeId() {
+        return episodesRepository.findByEpisodeName(DEFAULT_EPISODE_NAME)
+                .map(Episode::getId)
+                .orElseThrow(() -> new RuntimeException("No default episode"));
     }
 
     @PostMapping(value = "/articles", params = {"action=add"})
