@@ -76,7 +76,11 @@
                     <td>
                         <input th:type="checkbox" th:field="*{selected}" th:value="${article.getArticleId()}" />
                     </td>
-                    <td th:text="${article.getArticleTitle()}"/>
+                    <td>
+                        <a th:href="${article.getArticleUrl()}"
+                           th:text="${article.getArticleTitle()}"
+                           target="_blank"></a>
+                    </td>
                     <td th:text="${article.getSourceName()}"/>
                 </tr>
                 </tbody>
