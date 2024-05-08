@@ -16,6 +16,7 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.Collection;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static dev.abarmin.bots.entity.jooq.Tables.ARTICLES;
 import static dev.abarmin.bots.entity.jooq.Tables.ARTICLE_SOURCES;
@@ -39,9 +40,16 @@ public class EpisodesController {
     public ModelAndView edit(ModelAndView modelAndView, @PathVariable("id") int episodeId) {
         modelAndView.addObject("episode", repository.findById(episodeId).orElseThrow());
         modelAndView.addObject("articles", getArticles(episodeId));
+        modelAndView.addObject("articlesDigest", buildDigest(getArticles(episodeId)));
         modelAndView.addObject("selected", new ArticleList());
         modelAndView.setViewName("episodes/edit");
         return modelAndView;
+    }
+
+    private String buildDigest(Collection<ArticleRow> articles) {
+        return articles.stream()
+                .map(art -> String.format("* %s - %s", art.getArticleTitle(), art.getArticleUrl()))
+                .collect(Collectors.joining("\n"));
     }
 
     @GetMapping("/episodes/add")
