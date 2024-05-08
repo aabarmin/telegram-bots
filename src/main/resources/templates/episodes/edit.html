@@ -49,6 +49,12 @@
         <h3>Articles in the episode</h3>
     </div>
 
+    <div class="row">
+        <div class="alert alert-dark">
+            <pre th:text="${articlesDigest}" />
+        </div>
+    </div>
+
     <form th:action="@{/episodes/{id}(id=${episode.getId()})}" th:object="${selected}" th:method="post">
         <div class="row" th:if="${episode.getId() != 0}">
             <ul class="nav nav-pills">
