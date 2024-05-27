@@ -2,14 +2,14 @@ package dev.abarmin.bots.repository;
 
 import dev.abarmin.bots.entity.rss.Article;
 import org.springframework.data.jdbc.repository.query.Query;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.ListCrudRepository;
 
 import java.net.URI;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Optional;
 
-public interface ArticleRepository extends CrudRepository<Article, Integer> {
+public interface ArticleRepository extends ListCrudRepository<Article, Integer> {
     Optional<Article> findByArticleUri(URI articleUri);
 
     @Query("""
