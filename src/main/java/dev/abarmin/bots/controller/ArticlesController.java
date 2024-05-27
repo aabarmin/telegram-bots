@@ -1,23 +1,21 @@
 package dev.abarmin.bots.controller;
 
-import com.google.common.collect.Lists;
-import dev.abarmin.bots.controller.model.ArticleEpisode;
-import dev.abarmin.bots.controller.model.ArticleRow;
 import dev.abarmin.bots.entity.episodes.Episode;
 import dev.abarmin.bots.entity.episodes.EpisodeArticle;
+import dev.abarmin.bots.entity.episodes.EpisodeStatus;
 import dev.abarmin.bots.entity.rss.ArticleSource;
+import dev.abarmin.bots.model.ArticlesRequest;
+import dev.abarmin.bots.model.ArticlesResponse;
 import dev.abarmin.bots.repository.ArticleSourceRepository;
 import dev.abarmin.bots.repository.EpisodeArticlesRepository;
 import dev.abarmin.bots.repository.EpisodesRepository;
+import dev.abarmin.bots.service.ArticleProvider;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
-import org.jooq.Condition;
-import org.jooq.DSLContext;
-import org.jooq.impl.DSL;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,23 +32,22 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static dev.abarmin.bots.entity.jooq.Tables.ARTICLES;
-import static dev.abarmin.bots.entity.jooq.Tables.ARTICLE_SOURCES;
-import static dev.abarmin.bots.entity.jooq.Tables.EPISODES;
-import static dev.abarmin.bots.entity.jooq.Tables.EPISODES_ARTICLES;
 import static dev.abarmin.bots.service.DefaultEpisodeCreator.DEFAULT_EPISODE_NAME;
 
 @Controller
 @RequiredArgsConstructor
 public class ArticlesController {
-    private final DSLContext dslContext;
     private final EpisodesRepository episodesRepository;
     private final EpisodeArticlesRepository episodeArticlesRepository;
     private final ArticleSourceRepository articleSourceRepository;
+    private final ArticleProvider articleProvider;
 
     @ModelAttribute("episodes")
-    public Iterable<Episode> episodes() {
-        return episodesRepository.findAll();
+    public Collection<Episode> episodes() {
+        return episodesRepository.findAll()
+                .stream()
+                .filter(ep -> ep.getEpisodeStatus() != EpisodeStatus.PUBLISHED)
+                .toList();
     }
 
     @ModelAttribute("sources")
@@ -60,14 +57,25 @@ public class ArticlesController {
 
     @GetMapping("/articles")
     public ModelAndView index(ModelAndView modelAndView,
+                              @RequestParam(value = "page", defaultValue = "0") int page,
                               @RequestParam(value = "show_all", defaultValue = "false") boolean showAll,
                               @RequestParam(value = "sources", defaultValue = "") String sourcesString) {
+
+        ArticlesResponse articles = articleProvider.getArticles(ArticlesRequest.builder()
+                .page(page)
+                .showAll(showAll)
+                .sources(getSources(sourcesString))
+                .build());
+
         modelAndView.addObject("articlesList", ArticlesList.builder()
                 .selectedSources(getSources(sourcesString))
                 .showAll(showAll)
                 .episodeId(getDefaultEpisodeId())
+                .page(page)
                 .build());
-        modelAndView.addObject("articles", getArticles(showAll, getSources(sourcesString)));
+        modelAndView.addObject("articles", articles.getArticles());
+        modelAndView.addObject("page", articles.getPage());
+        modelAndView.addObject("totalPages", articles.getTotalPages());
         modelAndView.setViewName("articles/index");
         return modelAndView;
     }
@@ -119,59 +127,6 @@ public class ArticlesController {
                 .collect(Collectors.toSet());
     }
 
-    private Collection<ArticleRow> getArticles(boolean showAll, Collection<Integer> sources) {
-        var builder = dslContext.select(
-                        ARTICLES.ARTICLE_ID,
-                        ARTICLES.ARTICLE_TITLE,
-                        ARTICLES.ARTICLE_URL,
-                        ARTICLES.ARTICLE_ADDED,
-                        ARTICLE_SOURCES.SOURCE_ID,
-                        ARTICLE_SOURCES.SOURCE_NAME)
-                .from(ARTICLES)
-                .innerJoin(ARTICLE_SOURCES).on(ARTICLES.ARTICLE_SOURCE_ID.eq(ARTICLE_SOURCES.SOURCE_ID));
-        final Collection<Condition> conditions = Lists.newArrayList();
-
-        if (!showAll) {
-            builder = builder.leftJoin(EPISODES_ARTICLES).on(EPISODES_ARTICLES.ARTICLE_ID.eq(ARTICLES.ARTICLE_ID));
-            conditions.add(EPISODES_ARTICLES.EPISODE_ID.isNull());
-        }
-        if (!sources.isEmpty()) {
-            conditions.add(ARTICLE_SOURCES.SOURCE_ID.in(sources));
-        }
-        if (conditions.isEmpty()) {
-            conditions.add(DSL.trueCondition());
-        }
-        return builder.where(DSL.and(conditions))
-                .orderBy(ARTICLES.ARTICLE_ADDED.desc())
-                .fetch()
-                .map(record -> {
-                    return ArticleRow.builder()
-                            .articleId(record.get(ARTICLES.ARTICLE_ID))
-                            .articleTitle(record.get(ARTICLES.ARTICLE_TITLE))
-                            .articleUrl(record.get(ARTICLES.ARTICLE_URL))
-                            .articleAdded(record.get(ARTICLES.ARTICLE_ADDED))
-                            .sourceId(record.get(ARTICLE_SOURCES.SOURCE_ID))
-                            .sourceName(record.get(ARTICLE_SOURCES.SOURCE_NAME))
-                            .episodes(getEpisodes(record.get(ARTICLES.ARTICLE_ID)))
-                            .build();
-                });
-    }
-
-    private Collection<ArticleEpisode> getEpisodes(int articleId) {
-        return dslContext.select(EPISODES.EPISODE_ID, EPISODES.EPISODE_NAME)
-                .from(EPISODES)
-                .innerJoin(EPISODES_ARTICLES).on(EPISODES_ARTICLES.EPISODE_ID.eq(EPISODES.EPISODE_ID))
-                .innerJoin(ARTICLES).on(EPISODES_ARTICLES.ARTICLE_ID.eq(ARTICLES.ARTICLE_ID))
-                .where(ARTICLES.ARTICLE_ID.eq(articleId))
-                .fetch()
-                .map(record -> {
-                    return ArticleEpisode.builder()
-                            .episodeId(record.get(EPISODES.EPISODE_ID))
-                            .episodeName(record.get(EPISODES.EPISODE_NAME))
-                            .build();
-                });
-    }
-
     @Data
     @Builder
     @NoArgsConstructor
@@ -181,5 +136,6 @@ public class ArticlesController {
         private Collection<Integer> selectedSources;
         private boolean showAll;
         private int episodeId;
+        private int page;
     }
 }

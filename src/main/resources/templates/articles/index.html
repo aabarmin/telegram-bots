@@ -100,6 +100,15 @@
         </div>
     </form>
 
+    <ul class="pagination">
+        <li class="page-item"
+            th:each="item : ${#numbers.sequence(0, totalPages - 1)}"
+            th:class="${item == page ? 'active' : ''}">
+            <a class="page-link"
+               th:href="@{/articles?page={p}(p=${item})}">[[${item+1}]]</a>
+        </li>
+    </ul>
+
     <script>
         $(document).ready(function(){
             $("#selectAll").click(function(){
@@ -126,6 +135,9 @@
                     selected.push(item.value);
                 }
                 params["sources"] = selected.join(",")
+                if ("page" in params) {
+                    delete params["page"];
+                }
 
                 window.location.href = base + "?" + Object.keys(params).map(key => {return key + "=" + params[key]}).join("&")
             });
