@@ -71,12 +71,12 @@ dependencies {
 	testImplementation 'org.springframework.security:spring-security-test'
 	testImplementation "com.tngtech.archunit:archunit:${archunitVersion}"
 
-	jooqCodegen "com.h2database:h2:2.2.224"
+	jooqCodegen "com.h2database:h2:2.3.230"
 
 	liquibaseRuntime "org.liquibase:liquibase-core:4.28.0"
 	liquibaseRuntime "info.picocli:picocli:4.7.6"
 	liquibaseRuntime "org.yaml:snakeyaml:2.2"
-	liquibaseRuntime "com.h2database:h2:2.2.224"
+	liquibaseRuntime "com.h2database:h2:2.3.230"
 }
 
 jooq {
