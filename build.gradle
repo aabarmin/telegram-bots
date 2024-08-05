@@ -73,7 +73,7 @@ dependencies {
 
 	jooqCodegen "com.h2database:h2:2.3.230"
 
-	liquibaseRuntime "org.liquibase:liquibase-core:4.28.0"
+	liquibaseRuntime "org.liquibase:liquibase-core:4.29.1"
 	liquibaseRuntime "info.picocli:picocli:4.7.6"
 	liquibaseRuntime "org.yaml:snakeyaml:2.2"
 	liquibaseRuntime "com.h2database:h2:2.3.230"
